@@ -1,0 +1,35 @@
+$primary: #970808;
+
+@import '~bootstrap/scss/bootstrap.scss';
+
+.btn-delete-link {
+    color: $gray-400;
+    padding: 0;
+}
+
+.btn-delete-link:hover {
+    color: $danger;
+}
+
+.btn-like-link {
+    color: $gray-400;
+    padding: 0;
+}
+
+.btn-liked-link {
+    color: $danger;
+    padding: 0;
+}
+
+.btn-like-link:hover {
+    color: $danger;
+}
+
+.btn-comment-link {
+    color: $gray-400;
+    padding: 0;
+}
+
+.btn-comment-link:hover {
+    color: $dark;
+}
