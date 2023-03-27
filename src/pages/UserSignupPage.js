@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApiProgress } from '../shared/ApiProgress';
 import { useDispatch } from 'react-redux';
-import { logoutSuccess, signupHandler } from '../redux/authActions';
-import { deleteProfile, deleteVerification, getVerificationCode, sendVerificationCode } from '../api/apiCalls';
+import { signupHandler } from '../redux/authActions';
+import { deleteProfile, deleteVerification, getVerificationCode, sendVerificationCode, signup } from '../api/apiCalls';
 import Input from '../components/Input';
 import ButtonWithProgress from '../components/ButtonWithProgress';
 import ModalWithInput from '../components/ModalWithInput';
@@ -50,10 +50,9 @@ const UserSignupPage = (props) => {
         }
         let canJoin = false;
         try {
-            await dispatch(signupHandler(body));
+            await signup(body);
             canJoin = true
             await deleteProfile(username);
-            dispatch(logoutSuccess());
         } catch (error) {
             if (error.response.data.validationError) {
                 setErrors(error.response.data.validationError);

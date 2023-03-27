@@ -47,7 +47,7 @@ export const getPost = (username, page = 0, size = 5) => {
 };
 
 export const getPostsByCategory = (category) => {
-    return axios.get(`/api/posts/${category}`);
+    return axios.get(`/api/${category}/posts`);
 };
 
 export const getOldPosts = (id, username) => {

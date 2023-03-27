@@ -24,7 +24,8 @@ const App = () => {
           <Route path='/user/:username' component={UserPage} />
           <Route path='/testpage' component={TestPage} />
           <Route path='/schoolClubs' component={ClubsPage} />
-          <Redirect to='/login' />
+          {!isLoggedIn && <Redirect to='/login' />}
+          {isLoggedIn && <Redirect to='/' />}
         </Switch>
         {!isLoggedIn && <LanguageSelectorNotLogin />}
       </Router>

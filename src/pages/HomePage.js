@@ -10,6 +10,24 @@ const HomePage = () => {
     const [postCategory, setPostCategory] = useState('allPosts');
 
     const onClick = async (event) => {
+        // if (event.target.name === 'questions') {
+        //     setPostCategory('questions');
+        // }
+        // else if (event.target.name === 'dormitories') {
+        //     setPostCategory('dormitories');
+        // }
+        // else if (event.target.name === 'houseMate') {
+        //     setPostCategory('houseMate');
+        // }
+        // else if (event.target.name === 'lostItems') {
+        //     setPostCategory('lostItems');
+        // }
+        // else if (event.target.name === 'studentStore') {
+        //     setPostCategory('studentStore')
+        // }
+        // else if (event.target.name === 'others') {
+        //     setPostCategory('others');
+        // }
         setPostCategory(event.target.name);
     };
 

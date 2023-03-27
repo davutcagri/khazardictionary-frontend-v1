@@ -9,7 +9,7 @@ const PostCategories = (props) => {
     return (
         <div className='card m-2'>
             <div className='card-body'>
-                <ButtonWithIcon name='allPosts' className='btn d-inline-flex' icon='newspaper' label={t('allPosts')} onClick={onClick} />
+                <ButtonWithIcon name='allPosts' className='btn d-inline-flex' icon='newspaper' label={t('allPosts')} onClick='/' />
                 <ButtonWithIcon name='questions' className='btn d-inline-flex' icon='help' label={t('questions')} onClick={onClick} />
                 <ButtonWithIcon name='schoolClubs' className='btn d-inline-flex' icon='groups' label={t('schoolClubs')} toPage='/schoolClubs' />
                 <ButtonWithIcon name='houseMate' className='btn d-inline-flex' icon='roofing' label={t('houseMate')} onClick={onClick} />
