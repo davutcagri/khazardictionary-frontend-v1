@@ -8,7 +8,6 @@ import HomePage from '../pages/HomePage';
 import UserPage from '../pages/UserPage';
 import LanguageSelectorNotLogin from '../components/LanguageSelectorNotLogin';
 import TestPage from '../pages/TestPage';
-import ClubsPage from '../pages/ClubsPage';
 
 const App = () => {
   const { isLoggedIn } = useSelector((store) => ({ isLoggedIn: store.isLoggedIn }));
@@ -23,7 +22,6 @@ const App = () => {
           {!isLoggedIn && <Route path='/login' component={UserLoginPage} />}
           <Route path='/user/:username' component={UserPage} />
           <Route path='/testpage' component={TestPage} />
-          <Route path='/schoolClubs' component={ClubsPage} />
           {!isLoggedIn && <Redirect to='/login' />}
           {isLoggedIn && <Redirect to='/' />}
         </Switch>

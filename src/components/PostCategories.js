@@ -9,9 +9,8 @@ const PostCategories = (props) => {
     return (
         <div className='card m-2'>
             <div className='card-body'>
-                <ButtonWithIcon name='allPosts' className='btn d-inline-flex' icon='newspaper' label={t('allPosts')} onClick='/' />
+                <ButtonWithIcon name='allPosts' className='btn d-inline-flex' icon='newspaper' label={t('allPosts')} onClick={onClick} />
                 <ButtonWithIcon name='questions' className='btn d-inline-flex' icon='help' label={t('questions')} onClick={onClick} />
-                <ButtonWithIcon name='schoolClubs' className='btn d-inline-flex' icon='groups' label={t('schoolClubs')} toPage='/schoolClubs' />
                 <ButtonWithIcon name='houseMate' className='btn d-inline-flex' icon='roofing' label={t('houseMate')} onClick={onClick} />
                 <ButtonWithIcon name='dormitories' className='btn d-inline-flex' icon='night_shelter' label={t('dormitories')} onClick={onClick} />
                 <ButtonWithIcon name='lostItems' className='btn d-inline-flex' icon='backpack' label={t('lostItems')} onClick={onClick} />
