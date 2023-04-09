@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PostFeed from '../components/PostFeed';
-import PostSumbit from '../components/PostSumbit';
 import UserList from '../components/UserList';
 import PostCategories from '../components/PostCategories';
-import { useSelector } from 'react-redux';
+import PostSumbit from '../components/PostSumbit';
 
-const HomePage = () => {
+const HomePage = (props) => {
     const { isLoggedIn } = useSelector((store) => ({ isLoggedIn: store.isLoggedIn }));
     const [postCategory, setPostCategory] = useState('allPosts');
+
+    const { history } = props;
+    const { push } = history;
 
     const onClick = async (event) => {
         if (event.target.name === 'allPosts') {
@@ -31,7 +34,6 @@ const HomePage = () => {
         else if (event.target.name === 'others') {
             setPostCategory('others');
         }
-        // setPostCategory(event.target.name);
     };
 
     return (
@@ -45,8 +47,8 @@ const HomePage = () => {
                 <div className='col-6'>
                     {isLoggedIn &&
                         <div className='mb-2'>
-                            <PostSumbit />
-                            <PostFeed postCategory={postCategory} />
+                            <PostSumbit postCategory={postCategory} />
+                            <PostFeed postCategory={postCategory} push={push} />
                         </div>
                     }
                 </div>

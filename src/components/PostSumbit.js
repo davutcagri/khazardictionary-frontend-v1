@@ -7,11 +7,14 @@ import ProfileImageWithDefaults from './ProfileImageWithDefault';
 import ButtonWithProgress from './ButtonWithProgress';
 import AutoUploadImage from './AutoUploadImage';
 import Select from 'react-select';
+import Input from './Input';
 
-const PostSumbit = () => {
+const PostSumbit = (props) => {
     //POST SUMBIT'S MAIN STATES
+    const [modalVisible, setModalVisible] = useState(false);
     const [focused, setFocused] = useState(false);
-    const [post, setPost] = useState('');
+    const [postTitle, setPostTitle] = useState('');
+    const [postContent, setPostContent] = useState('');
     const [newImage, setNewImage] = useState();
     const [attachmentId, setAttachmentId] = useState();
     const [selectedCategory, setSelectedCategory] = useState();
@@ -43,18 +46,29 @@ const PostSumbit = () => {
         categoryClass += ' is-invalid';
     }
 
+    //CREATE POST BUTTON ON CLICK
+    const onClickCreatePostButton = () => {
+        if (!modalVisible) {
+            setModalVisible(true);
+        }
+        else {
+            setModalVisible(false);
+        }
+    };
+
     //POST ON CLICK
     const onClickPost = async () => {
         const body = {
-            content: post,
+            title: postTitle,
+            content: postContent,
             category: selectedCategory,
             attachmentId: attachmentId
         }
 
-        if(selectedCategory !== undefined) {
+        if (selectedCategory !== undefined) {
             try {
                 await sharePost(body);
-                setFocused(false);
+                setModalVisible(false);
             } catch (error) {
                 if (error.response.data.validationError) {
                     setErrors(error.response.data.validationError);
@@ -68,7 +82,7 @@ const PostSumbit = () => {
 
     //CANCEL ON CLICK
     const onClickCancel = async () => {
-        setFocused(false);
+        setModalVisible(false);
     };
 
     //FILE ON CHANGE
@@ -96,7 +110,7 @@ const PostSumbit = () => {
 
     useEffect(() => {
         if (!focused) {
-            setPost('');
+            setPostContent('');
             setErrors({})
             setSelectedCategory();
             setCategoryError();
@@ -107,68 +121,122 @@ const PostSumbit = () => {
     useEffect(() => {
         setErrors({});
         setCategoryError();
-    }, [post]);
+    }, [postContent]);
 
     return (
-        <div className='card p-3 flex-row shadow mb-2'>
-            <ProfileImageWithDefaults
-                className='rounded-circle mx-1'
-                image={image}
-                width='32'
-                height='32' />
-            <div className='flex-fill'>
-                <textarea
-                    className={textAreaClass}
-                    rows={focused ? '3' : '1'}
-                    onFocus={() => setFocused(true)}
-                    onChange={(event) => setPost(event.target.value)}
-                    value={post}
-                />
-                <div className="invalid-feedback">{errors.content}</div>
-                {focused &&
-                    <div className='mt-1'>
-                        <>
+        <>
 
-                            {/* ACTIONS */}
-                            <label className='m-1'>
-                                <i className='material-icons' style={{ cursor: 'pointer' }}>
-                                    image
-                                    <input type='file' style={{ display: 'none' }} onChange={onChangeFile} />
-                                </i>
-                            </label>
-                            {/* <label className='m-1'>
-                                <i className='material-icons' style={{ cursor: 'pointer' }}>event</i>
-                            </label> */}
-                            {newImage && <AutoUploadImage image={newImage} />}
-                            <Select
-                                className={categoryClass}
-                                onChange={(choice) => setSelectedCategory(choice.value)}
-                                placeholder={t('category')}
-                                options={options}
-                            />
-                            <div className="invalid-feedback">{categoryError}</div>
-                            <div className='mt-3'>
-                                <button
-                                    className='btn btn-light float-end d-inline-flex ms-1'
-                                    onClick={onClickCancel}
-                                    disabled={pendingApiCall}>
-                                    <i className='material-icons' >close</i>{t('cancel')}
-                                </button>
+            <div className='d-flex mb-3'>
 
-                                <ButtonWithProgress
-                                    className='btn btn-primary float-end'
-                                    onClick={onClickPost}
-                                    pendingApiCall={pendingApiCall}
-                                    disabled={pendingApiCall}
-                                    text={t('share')}>
-                                </ButtonWithProgress>
-                            </div>
-                        </>
-                    </div>
-                }
+                <h2>{t(props.postCategory)}</h2>
+                <button className='btn btn-primary ms-auto' onClick={onClickCreatePostButton}>{t('createPost')}</button>
+
             </div>
-        </div>
 
+            {modalVisible && <div className='modal fade show d-block' tabIndex='-1' style={{ backgroundColor: '#000000b0' }}>
+
+                <div className='modal-dialog'>
+
+                    <div className='modal-content p-3 flex-row shadow mb-2'>
+
+                        <div className='flex-fill'>
+
+                            <div className='modal-header mb-3'>
+
+                                {/* CREATE POST TITLE */}
+                                <h3 className='mt-2'>{t('createPost')}</h3>
+
+                                {/* PROFILE IMAGE */}
+                                <ProfileImageWithDefaults
+                                    className='rounded-circle mx-1 shadow'
+                                    image={image}
+                                    width='50'
+                                    height='50' />
+                            </div>
+
+                            <div className='modal-body'>
+
+                                {/* TITLE INPUT */}
+                                <Input
+                                    label={t('postTitle')}
+                                    onChange={(event) => setPostTitle(event.target.value)}
+                                    value={postTitle}
+                                />
+
+                                {/* CONTENT INPUT */}
+                                <label>{t('postContent')}</label>
+
+                                <textarea
+                                    className={textAreaClass}
+                                    rows={focused ? '3' : '1'}
+                                    onFocus={() => setFocused(true)}
+                                    onChange={(event) => setPostContent(event.target.value)}
+                                    value={postContent}
+                                />
+
+                                <div className='invalid-feedback'>{errors.content}</div>
+
+                                {/* CATEGORY */}
+                                <Select
+                                    className={categoryClass}
+                                    onChange={(choice) => setSelectedCategory(choice.value)}
+                                    placeholder={t('category')}
+                                    options={options}
+                                />
+
+                                <div className='invalid-feedback'>{categoryError}</div>
+
+                                {/* OTHERS */}
+                                <div className='mt-3'>
+
+                                    <div className='mt-1'>
+
+                                        {/* ACTIONS */}
+                                        <label className='m-1'>
+
+                                            <i className='material-icons' style={{ cursor: 'pointer' }}>
+                                                image
+                                                <input type='file' style={{ display: 'none' }} onChange={onChangeFile} />
+                                            </i>
+
+                                        </label>
+
+                                        {newImage && <AutoUploadImage image={newImage} />}
+
+                                        {/* CANCEL BUTTON */}
+                                        <button
+                                            className='mt-3 btn btn-dark float-end d-inline-flex ms-1'
+                                            onClick={onClickCancel}
+                                            data-bs-dismiss='modal'
+                                            disabled={pendingApiCall}>
+                                            <i className='material-icons' >close</i>{t('cancel')}
+                                        </button>
+
+                                        {/* SHARE BUTTON */}
+                                        <ButtonWithProgress
+                                            className='mt-3 btn btn-primary float-end d-inline-flex'
+                                            onClick={onClickPost}
+                                            pendingApiCall={pendingApiCall}
+                                            disabled={pendingApiCall}
+                                            icon={'send'}
+                                            text={t('share')}>
+                                        </ButtonWithProgress>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div >}
+
+        </>
     );
 }
 

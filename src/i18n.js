@@ -55,13 +55,21 @@ i18next.use(initReactI18next).init({
                 'changeDisplayName': 'Change Display Name',
 
                 // Post
+                'createPost': 'Create Post',
+                'postTitle': 'Post Title',
+                'postContent': 'Post Content',
                 'share': 'Share',
                 'noPost': 'No posts',
                 'loadOldPosts': 'Load older posts',
-                'loadNewPosts': 'Load newer posts',
+                'loadNewPosts': 'Load new posts',
                 'modalDeletePostTitle': 'Delete Post',
                 'modalDeletePostParagraph': 'Are you sure you want to delete this post?',
                 'modalDeletePostAcceptButton': 'Accept',
+                'like': 'like',
+                'comment': 'comment',
+                'comments': 'Comments',
+                'sumbit': 'Share',
+                'modalDeleteCommentParagraph': 'Are you sure you want to delete this comment?',
 
                 // Account deletion
                 'modalDeleteAccountParagraph': 'Are you sure you want to delete your account?',
@@ -142,6 +150,9 @@ i18next.use(initReactI18next).init({
                 'changeDisplayName': 'Görünen Adı Değiştir',
 
                 // Post
+                'createPost': 'Gönderi Oluştur',
+                'postTitle': 'Gönderi Başlığı',
+                'postContent': 'Gönderi İçeriği',
                 'share': 'Paylaş',
                 'noPost': 'Gönderi yok',
                 'loadOldPosts': 'Eski gönderileri yükle',
@@ -149,6 +160,11 @@ i18next.use(initReactI18next).init({
                 'modalDeletePostTitle': 'Gönderiyi Sil',
                 'modalDeletePostParagraph': 'Bu gönderiyi silmek istediğinizden emin misiniz?',
                 'modalDeletePostAcceptButton': 'Kabul',
+                'like': 'beğenme',
+                'comment': 'yorum',
+                'comments': 'Yorumlar',
+                'sumbit': 'Paylaş',
+                'modalDeleteCommentParagraph': 'Bu yorumu silmek istediğinizden emin misiniz?',
 
                 // Account deletion
                 'modalDeleteAccountParagraph': 'Hesabınızı silmek istediğinizden emin misiniz?',
@@ -229,6 +245,9 @@ i18next.use(initReactI18next).init({
                 'changeDisplayName': 'Görünən adı dəyişdir',
 
                 // Post
+                'createPost': 'Məqalə Yarat',
+                'postTitle': 'Məqalə Başlığı',
+                'postContent': 'Məqalə Məzmunu',
                 'share': 'Paylaş',
                 'noPost': 'Hər hansı bir göndəri yoxdur',
                 'loadOldPosts': 'Köhnə göndəri yüklə',
@@ -236,6 +255,11 @@ i18next.use(initReactI18next).init({
                 'modalDeletePostTitle': 'Göndəri sil',
                 'modalDeletePostParagraph': 'Bu göndəri silmək istədiyinizdən əminsiniz?',
                 'modalDeletePostAcceptButton': 'Təsdiq et',
+                'like': 'bəyənmə',
+                'comment': 'şərh',
+                'comments': 'Şərhlər',
+                'sumbit': 'Paylaş',
+                'modalDeleteCommentParagraph': 'Bu şərhi silmək istədiyinizdən əminsiniz?',
 
                 // Account deletion
                 'modalDeleteAccountParagraph': 'Hesabınızı silmək istədiyinizdən əminsiniz?',
@@ -316,6 +340,9 @@ i18next.use(initReactI18next).init({
                 'changeDisplayName': 'Изменить отображаемое имя',
 
                 // Post
+                'createPost': 'Создать пост',
+                'postTitle': 'Заголовок поста',
+                'postContent': 'Содержание поста',
                 'share': 'Поделиться',
                 'noPost': 'Нет поста',
                 'loadOldPosts': 'Загрузить старые посты',
@@ -323,6 +350,11 @@ i18next.use(initReactI18next).init({
                 'modalDeletePostTitle': 'Удалить пост',
                 'modalDeletePostParagraph': 'Вы уверены, что хотите удалить этот пост?',
                 'modalDeletePostAcceptButton': 'Подтвердить',
+                'like': 'лайков',
+                'comment': 'комментариев',
+                'comments': 'Комментарии',
+                'sumbit': 'Делиться',
+                'modalDeleteCommentParagraph': 'Вы уверенны, что хотите удалить этот комментарий?',
 
                 // Account deletion
                 'modalDeleteAccountParagraph': 'Вы уверены, что хотите удалить свою учетную запись?',

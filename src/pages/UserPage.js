@@ -7,9 +7,12 @@ import PostFeed from '../components/PostFeed';
 import Spinner from '../components/Spinner';
 import ProfileCard from '../components/ProfileCard';
 
-const UserPage = () => {
+const UserPage = (props) => {
     const [user, setUser] = useState({});
     const [notFound, setNotFound] = useState(false);
+
+    const { history } = props;
+    const { push } = history;
 
     const { username } = useParams();
     const { t } = useTranslation();
@@ -29,7 +32,7 @@ const UserPage = () => {
 
         loadUser();
     }, [username]);
-    
+
     if (notFound) {
         return (
             <div className='container'>
@@ -52,7 +55,7 @@ const UserPage = () => {
                     <ProfileCard user={user} />
                 </div>
                 <div className='col'>
-                    <PostFeed postCategory='allPosts' />
+                    <PostFeed postCategory='allPosts' push={push} />
                 </div>
             </div>
         </div>

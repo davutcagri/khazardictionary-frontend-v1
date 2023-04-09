@@ -41,6 +41,11 @@ export const sharePost = (item) => {
     return axios.post('/api/posts', item);
 };
 
+export const getPostByUsernameAndId = (username, id) => {
+    const path = `/api/posts/${username}/${id}`;
+    return axios.get(path);
+};
+
 export const getPost = (username, page = 0, size = 5) => {
     const path = username ? `/api/users/${username}/posts?page=${page}&size=${size}` : `/api/posts?page=${page}&size=${size}`;
     return axios.get(path);
@@ -91,4 +96,16 @@ export const getVerificationCode = (email) => {
 
 export const deleteVerification = (email) => {
     return axios.delete(`/api/verification/${email}`);
-}
+};
+
+export const sendComment = (body, id) => {
+    return axios.post(`/api/posts/${id}/comments`, body);
+};
+
+export const getCommentsByPost = (id, page = 0) => {
+    return axios.get(`/api/posts/${id}/comments?page=${page}`);
+};
+
+export const deleteComment = (id) => {
+    return axios.delete(`/api/comments/${id}`)
+};

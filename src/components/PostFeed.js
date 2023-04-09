@@ -1,5 +1,5 @@
 import React from 'react';
-import PostView from './PostView';
+import PostsListView from './PostsListView';
 import Spinner from './Spinner';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -52,13 +52,6 @@ const PostFeed = (props) => {
             ...response.data,
             content: [...previousPostPage.content, ...response.data.content]
         }));
-    };
-
-    const onDeletePostSuccess = (id) => {
-        setPostPage(previousPostPage => ({
-            ...previousPostPage,
-            content: previousPostPage.content.filter((post) => post.id !== id)
-        }))
     };
 
     useEffect(() => {
@@ -122,7 +115,7 @@ const PostFeed = (props) => {
                 {loadNewPostProgress ? <Spinner /> : t('loadNewPosts')}
             </div>}
             {content.map(post => {
-                return <PostView key={post.id} post={post} onDeletePost={onDeletePostSuccess} />
+                return <PostsListView key={post.id} post={post} push={props.push} />
             })}
             {!last && <div
                 className='alert alert-secondary text-center'

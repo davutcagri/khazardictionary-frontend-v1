@@ -1,149 +1,242 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { addLike, deletePost, getPostByUsernameAndId, getUser, sendComment } from '../api/apiCalls';
 import { format } from 'timeago.js';
 import { useTranslation } from 'react-i18next';
+import { ipv4 } from '../components/IpForImages';
 import { useSelector } from 'react-redux';
-import { deletePost, addLike } from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
-import { ipv4 } from './IpForImages';
-import ProfileImageWithDefaults from './ProfileImageWithDefault';
-import Modal from './Modal';
+import Modal from '../components/Modal';
+import ProfileImageWithDefaults from '../components/ProfileImageWithDefault';
+import CommentSumbit from './CommentSumbit';
+import CommentView from './CommentView';
+import Spinner from './Spinner';
 
 const PostView = (props) => {
-    const { post, onDeletePost } = props;
-    const { user, content, timestamp, fileAttachment, id, likeCount, iliked, category } = post;
-    const { username, displayName, image } = user;
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [likes, setLikes] = useState(likeCount);
-    const [iLiked, setILiked] = useState(iliked);
+    const [commentSumbitEnabled, setCommentSumbitEnabled] = useState(false);
+    const [hasComment, setHasComment] = useState(false);
+    const [post, setPost] = useState('');
+    const [user, setUser] = useState('');
+    const [likes, setLikes] = useState('');
+    const [iLiked, setILiked] = useState('');
+    const [userLogged, setUserLogged] = useState('');
+    const [errors, setErrors] = useState({});
+
+    const { username, id } = useParams();
 
     const { t, i18n } = useTranslation();
+
+    const formatted = format(post.timestamp, i18n.language);
     const loggedInUser = useSelector(store => store.username);
-
-    const formatted = format(timestamp, i18n.language);
-
     const ownedbyLoggedInUser = loggedInUser === username;
+    const pendingApiCallDelete = useApiProgress('delete', `/api/posts/${id}`, true);
+    const pendingApiCallLoadPost = useApiProgress('get', `/api/posts/${username}/${id}`);
 
-    const pendingApiCall = useApiProgress('delete', `/api/1.0/posts/${id}`, true);
 
+    //ON CLICK DELETE
     const onClickDelete = async () => {
+        const { history } = props;
+        const { push } = history;
         await deletePost(id);
-        onDeletePost(id);
+        setModalVisible(false);
+        push('/')
     };
 
+    //ON CLICK MODAL CANCEL
     const onClickCancel = () => {
         setModalVisible(false);
     };
 
+    //ON CLICK LIKE
     const onClickLike = async () => {
         await addLike(id, username);
         if (iLiked === false) {
-            if (likes !== likeCount) {
-                setLikes(likeCount);
+            if (likes !== post.likeCount) {
+                setLikes(post.likeCount);
             }
             else {
-                const newLikeCount = likeCount + 1;
+                const newLikeCount = post.likeCount + 1;
                 setLikes(newLikeCount);
             }
             setILiked(true);
         }
         else if (iLiked === true) {
-            if (likes !== likeCount) {
-                setLikes(likeCount);
+            if (likes !== post.likeCount) {
+                setLikes(post.likeCount);
             }
             else {
-                const newLikeCount = likeCount - 1;
+                const newLikeCount = post.likeCount - 1;
                 setLikes(newLikeCount);
             }
             setILiked(false);
         }
     };
 
-    let likeButtonClassName = 'btn btn-like-link btn-sm float-end d-flex';
+    //ON CLICK COMMENT
+    const onClickComment = () => {
+
+        if (!commentSumbitEnabled) {
+            setCommentSumbitEnabled(true);
+        }
+        else {
+            setCommentSumbitEnabled(false);
+        }
+
+    };
+
+    useEffect(() => {
+        const getPost = async () => {
+
+            try {
+                const postResponse = await getPostByUsernameAndId(username, id);
+                const userResponse = await getUser(username);
+                const loggedInUserResponse = await getUser(loggedInUser);
+
+                setUserLogged(loggedInUserResponse.data);
+                setUser(userResponse.data);
+                setPost(postResponse.data.content[0]);
+                setILiked(postResponse.data.content[0].iliked);
+                setLikes(postResponse.data.content[0].likeCount);
+
+                if (post.commentCount !== 0) {
+                    setHasComment(true);
+                }
+                else {
+                    setHasComment(false);
+                }
+            } catch (error) { 
+                setErrors(error);
+            }
+
+        };
+        getPost();
+    }, []);
+
+    let likeButtonClassName = 'btn btn-like-link btn-sm mt-1';
     if (iLiked === true) {
-        likeButtonClassName = 'btn btn-liked-link btn-sm float-end d-flex';
+        likeButtonClassName = 'btn btn-liked-link btn-sm mt-1';
     }
 
-    let categoryName;
-    if (category === 'questions') {
-        categoryName = t('questions');
-    }
-    else if (category === 'dormitories') {
-        categoryName = t('dormitories');
-    }
-    else if (category === 'houseMate') {
-        categoryName = t('houseMate');
-    }
-    else if (category === 'lostItems') {
-        categoryName = t('lostItems');
-    }
-    else if (category === 'studentStore') {
-        categoryName = t('studentStore')
-    }
-    else if (category === 'others') {
-        categoryName = t('others');
+    if(pendingApiCallLoadPost) {
+        return <Spinner />
     }
 
     return (
-        <>
-            <div className='card m-3'>
-                <div className='d-flex card-header'>
-                    <ProfileImageWithDefaults
-                        className='rounded-circle mt-1 mx-1'
-                        image={image}
-                        width='32'
-                        height='32'
-                    />
-                    <div className='flex-fill m-auto mt-2 mx-2'>
-                        <Link className='text-dark' to={`/user/${username}`} style={{ textDecoration: 'none' }}>
-                            <h6 className='d-inline'>
-                                {displayName}
-                            </h6>
-                            <span> - </span>
-                            <span>{formatted}</span>
-                        </Link>
-                        {ownedbyLoggedInUser && (
-                            <button className='btn btn-delete-link btn-sm float-end' onClick={() => setModalVisible(true)}>
-                                <i className='material-icons'>delete_outline</i>
-                            </button>
-                        )}
-                        <button className={likeButtonClassName} onClick={onClickLike}>
-                            <strong>{likes} - </strong><i className='material-icons'>favorite</i>
-                        </button>
-                    </div>
-                </div>
-                <div className='ms-5 mt-2'>
-                    <p>{content}</p>
-                </div>
-                {fileAttachment && (
-                    <div className='text-center pb-5 px-5'>
-                        {fileAttachment.fileType.startsWith('image') && (
-                            <img className='rounded-square' style={{ width: '80%', borderRadius: '8px' }} src={ipv4 + '/images/attachments/' + fileAttachment.name} alt={content} />
-                        )}
+        <div className='container'>
 
-                        {!fileAttachment.fileType.startsWith('image') && (
-                            <strong>{t('unkownFileType')}</strong>
-                        )}
-                    </div>
-                )}
-                <div className='card-footer'>
-                    <span className='fw-light'>{t('category')}: {categoryName}</span>
+            {!errors &&
+                <div className='alert alert-primary text-center mb-1'>
+                    <i className='material-icons'>warning</i>
                 </div>
-            </div>
-            <Modal
-                visible={modalVisible}
-                onClickCancel={onClickCancel}
-                onClickOk={onClickDelete}
-                pendingApiCall={pendingApiCall}
-                message={
-                    <div>
-                        <div><strong>{t('modalDeletePostParagraph')}</strong></div>
-                        <span>{content}</span>
+            }
+
+            <div className='card mx-5'>
+
+                <div className='card-header flex-fill'>
+
+                    <div className='d-inline-flex'>
+
+                        {/* PROFILE IMAGE */}
+                        <ProfileImageWithDefaults
+                            className='rounded-circle shadow mt-1 mx-1'
+                            image={user.image}
+                            width='90'
+                            height='90'
+                        />
+
+                        <div className='row'>
+
+                            {/* USERNAME */}
+                            <Link className='mt-2 mx-2' to={`/user/${username}`} style={{ textDecoration: 'none', color: 'black', fontSize: '25px' }} >{user.displayName}</Link>
+
+                            {/* TIMESTAMP */}
+                            <a className='mx-2 text-muted'>{formatted}</a>
+
+                        </div>
+
                     </div>
-                }
-            />
-        </>
+
+                    {/* COUNTERS */}
+                    <div className='float-end mt-3'>
+
+                        <div className='text-muted text-end' style={{ textDecoration: 'none' }}>{likes} {t('like')}</div>
+                        <div className='text-muted text-end' style={{ textDecoration: 'none' }}>{post.commentCount} {t('comment')}</div>
+
+                    </div>
+
+                </div>
+
+                <div className='card-body'>
+
+                    {/* POST TITLE */}
+                    <h3>{post.title} </h3>
+
+                    {/* POST CONTENT */}
+                    <a>{post.content}</a>
+
+                    {/* IMAGE */}
+                    {post.fileAttachment && (
+                        <div className='my-3'>
+                            {post.fileAttachment.fileType.startsWith('image') && (
+                                <img className='rounded-square' style={{ width: '40%', borderRadius: '8px' }}
+                                    src={ipv4 + '/images/attachments/' + post.fileAttachment.name} alt={post.content} />
+                            )}
+
+                            {!post.fileAttachment.fileType.startsWith('image') && (
+                                <strong>{t('unkownFileType')}</strong>
+                            )}
+                        </div>
+                    )}
+
+                </div>
+
+                <div className='card-footer'>
+
+                    {/* DELETE POST BUTTON */}
+                    {ownedbyLoggedInUser && (
+                        <button className='btn btn-delete-link btn-sm mt-1 float-end' onClick={() => setModalVisible(true)}>
+                            <i className='material-icons'>delete_outline</i>
+                        </button>
+                    )}
+
+                    {/* LIKE BUTTON */}
+                    <button className={likeButtonClassName} onClick={onClickLike}>
+                        <i className='material-icons'>favorite</i>
+                    </button>
+
+                    {/* COMMENT BUTTON */}
+                    <button className='btn btn-comment-link btn-sm mt-1 mx-1' onClick={onClickComment}>
+                        <i className='material-icons'>message</i>
+                    </button>
+
+                </div>
+
+                <Modal
+                    visible={modalVisible}
+                    onClickCancel={onClickCancel}
+                    onClickOk={onClickDelete}
+                    pendingApiCall={pendingApiCallDelete}
+                    message={
+                        <div>
+                            <div><strong>{t('modalDeletePostParagraph')}</strong></div>
+                            <span>{post.content}</span>
+                        </div>
+                    }
+                />
+
+            </div>
+
+            {commentSumbitEnabled && <CommentSumbit userLogged={userLogged} id={id} setCommentSumbitEnabled={setCommentSumbitEnabled} />}
+            {hasComment &&
+                <div>
+                    <h3 className='mx-5 mt-2 mb-2'>{t('comments')}</h3>
+                    <CommentView id={id} />
+                </div>
+            }
+
+        </div>
     );
 }
 
