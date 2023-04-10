@@ -60,9 +60,9 @@ const CommentViewItem = (props) => {
                 <div className='card-footer'>
 
                     {/* LIKE BUTTON */}
-                    <button className='btn btn-like-link btn-sm mt-1 mx-1'>
+                    {/* <button className='btn btn-like-link btn-sm mt-1 mx-1'>
                         <i className='material-icons'>favorite</i>
-                    </button>
+                    </button> */}
 
                     {/* DELETE BUTTON */}
                     {ownedbyLoggedInUser && <button className='btn btn-delete-link btn-sm mt-1 float-end' onClick={() => { setModalEnabled(true) }}>

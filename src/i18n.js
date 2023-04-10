@@ -71,6 +71,9 @@ i18next.use(initReactI18next).init({
                 'sumbit': 'Share',
                 'modalDeleteCommentParagraph': 'Are you sure you want to delete this comment?',
 
+                //Messages
+                'messages': 'Messages',
+
                 // Account deletion
                 'modalDeleteAccountParagraph': 'Are you sure you want to delete your account?',
 
@@ -165,6 +168,9 @@ i18next.use(initReactI18next).init({
                 'comments': 'Yorumlar',
                 'sumbit': 'Paylaş',
                 'modalDeleteCommentParagraph': 'Bu yorumu silmek istediğinizden emin misiniz?',
+
+                //Messages
+                'messages': 'Mesajlar',
 
                 // Account deletion
                 'modalDeleteAccountParagraph': 'Hesabınızı silmek istediğinizden emin misiniz?',
@@ -261,6 +267,9 @@ i18next.use(initReactI18next).init({
                 'sumbit': 'Paylaş',
                 'modalDeleteCommentParagraph': 'Bu şərhi silmək istədiyinizdən əminsiniz?',
 
+                //Messages
+                'messages': 'Mesajlar',
+
                 // Account deletion
                 'modalDeleteAccountParagraph': 'Hesabınızı silmək istədiyinizdən əminsiniz?',
 
@@ -355,6 +364,9 @@ i18next.use(initReactI18next).init({
                 'comments': 'Комментарии',
                 'sumbit': 'Делиться',
                 'modalDeleteCommentParagraph': 'Вы уверенны, что хотите удалить этот комментарий?',
+
+                //Messages
+                'messages': 'Сообщения',
 
                 // Account deletion
                 'modalDeleteAccountParagraph': 'Вы уверены, что хотите удалить свою учетную запись?',
