@@ -10,7 +10,7 @@ const ButtonWithProgress = (props) => {
             onClick={onClick}
             disabled={disabled}>
             {pendingApiCall && <span className='spinner-border spinner-border-sm'></span>}
-            <i className='material-icons' >{icon}</i>
+            <i className='material-icons me-1' >{icon}</i>
             {text}
         </button>
     );

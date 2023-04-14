@@ -14,7 +14,8 @@ const getStateFromStorage = () => {
         username: undefined,
         displayName: undefined,
         image: undefined,
-        password: undefined
+        password: undefined,
+        roleName: undefined
     };
     if (kdAuth) {
         return kdAuth;

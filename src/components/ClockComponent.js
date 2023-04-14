@@ -10,7 +10,6 @@ const ClockComponent = () => {
     return (
         <div className='text-center'>
             <div className='card'>
-                <h1 className='display-6'>{t('clock')}</h1>
                 <strong className='display-5'>
                     {clock.hours.toString().padStart(2, '0')}:
                     {clock.minutes.toString().padStart(2, '0')}:

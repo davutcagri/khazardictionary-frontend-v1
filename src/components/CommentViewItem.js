@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { format } from 'timeago.js';
 import { useApiProgress } from '../shared/ApiProgress';
-import { deleteComment } from '../api/apiCalls';
+import { deleteComment, getUser } from '../api/apiCalls';
 import { useSelector } from 'react-redux';
 import Modal from '../components/Modal';
 import ProfileImageWithDefaults from './ProfileImageWithDefault';
@@ -11,6 +11,7 @@ import ProfileImageWithDefaults from './ProfileImageWithDefault';
 const CommentViewItem = (props) => {
 
     const [modalEnabled, setModalEnabled] = useState(false);
+    const [hasAdminRole, setHasAdminRole] = useState(false);
 
     const { comment, getPostCommet } = props;
     const { t, i18n } = useTranslation();
@@ -28,6 +29,12 @@ const CommentViewItem = (props) => {
         getPostCommet();
     };
 
+    useEffect(() => {
+        if (comment.user.roleName.includes('ROLE_ADMIN')) {
+            setHasAdminRole(true);
+        }
+    }, [hasAdminRole]);
+
     return (
         <div className='container'>
 
@@ -43,12 +50,23 @@ const CommentViewItem = (props) => {
                         height='32'
                     />
 
-                    {/* USER DISPLAYNAME */}
-                    <Link className='mt-1 mx-1 text-dark' style={{ textDecoration: 'none' }} to={`/user/${comment.user.username}`}>
-                        {comment.user.displayName}
-                    </Link>
+                    <div>
 
-                    <a className='text-muted mt-1' style={{ textDecoration: 'none' }}> - {formatted}</a>
+                        {/* USER DISPLAYNAME */}
+                        <Link className='mt-1 mx-1 text-dark' style={{ textDecoration: 'none' }} to={`/user/${comment.user.username}`}>
+                            {comment.user.displayName}
+                        </Link>
+
+                        {/* ADMIN TAG */}
+                        {hasAdminRole &&
+                            <span className="mx-2 badge bg-primary">ADMIN</span>
+                        }
+
+                        {/* TIMESTAMP */}
+                        <a className='text-muted mt-1' style={{ textDecoration: 'none' }}> - {formatted}</a>
+
+                    </div>
+
                 </div>
 
                 <div className='card-body'>

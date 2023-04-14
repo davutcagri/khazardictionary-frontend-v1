@@ -5,9 +5,12 @@ import ProfileImageWithDefaults from './ProfileImageWithDefault';
 
 const PostsListView = (props) => {
 
+
+    const [hasAdminRole, setHasAdminRole] = useState(false);
+
     const { post } = props;
     const { user, timestamp, id, category, title, commentCount } = post;
-    const { username, image } = user;
+    const { username, image, roleName } = user;
 
     const { t, i18n } = useTranslation();
 
@@ -16,6 +19,13 @@ const PostsListView = (props) => {
     const onClickOpen = () => {
         props.push(`/posts/${username}/${id}`);
     };
+
+    useEffect(() => {
+        if (roleName.includes('ROLE_ADMIN')) {
+            setHasAdminRole(true);
+        }
+    }, [hasAdminRole]);
+
 
     return (
         <div className='list-group m-3'>
@@ -35,8 +45,14 @@ const PostsListView = (props) => {
 
                         <div className='d-inline-flex row'>
 
-                            {/* POST TITLE */}
-                            <a style={{ fontSize: '20px' }}>{title}</a>
+                            <div>
+
+                                {/* POST TITLE */}
+                                <a style={{ fontSize: '20px' }}>{title}</a>
+
+                                {hasAdminRole && <span className="mx-2 badge bg-primary">ADMIN</span>}
+
+                            </div>
 
                             <div className='text-muted' style={{ fontSize: '14px' }}>
 
@@ -47,14 +63,14 @@ const PostsListView = (props) => {
                                 <a>• {formatted} </a>
 
                                 {/* CATEGORY */}
-                                <a>• {t(category)}</a>
+                                <a>• {t(category)} </a>
+
+                                {/* COMMENT COUNTER */}
+                                <a>• {commentCount} {t('comment')}</a>
 
                             </div>
 
                         </div>
-
-                        {/* COMMENT COUNTER */}
-                        <span className="float-end mt-3 badge bg-primary rounded-pill">{commentCount}</span>
 
                     </div>
 

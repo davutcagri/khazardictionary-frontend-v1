@@ -46,6 +46,11 @@ i18next.use(initReactI18next).init({
                 'loadFailure': 'Load failure',
                 'userNotFound': 'User not found',
 
+                //Announce
+                'announceContent': 'Announce Content',
+                'announceType': 'Announce Type',
+                'announceExpiredTime': 'Announce Expired Time',
+
                 // Profile
                 'editProfile': 'Edit Profile',
                 'deleteProfile': 'Delete Profile',
@@ -143,6 +148,11 @@ i18next.use(initReactI18next).init({
                 'previous': '< Önceki',
                 'loadFailure': 'Yükleme hatası',
                 'userNotFound': 'Kullanıcı bulunamadı',
+
+                //Announce
+                'announceContent': 'Duyuru İçeriği',
+                'announceType': 'Duyuru Türü',
+                'announceExpiredTime': 'Duyuru Bitiş Zamanı',
 
                 // Profile
                 'editProfile': 'Profili Düzenle',
@@ -242,6 +252,11 @@ i18next.use(initReactI18next).init({
                 'loadFailure': 'Yükləmə səhvi',
                 'userNotFound': 'İstifadəçi tapılmadı',
 
+                //Announce
+                'announceContent': 'Elan Məzmunu',
+                'announceType': 'Elan Növü',
+                'announceExpiredTime': 'Elan Bitmə Zamanı',
+
                 // Profile
                 'editProfile': 'Profil düzəliş et',
                 'deleteProfile': 'Profili sil',
@@ -339,6 +354,11 @@ i18next.use(initReactI18next).init({
                 'previous': '< Предыдущий',
                 'loadFailure': 'Ошибка загрузки',
                 'userNotFound': 'Пользователь не найден',
+
+                //Announce
+                'announceContent': 'Содержание объявления',
+                'announceType': 'Тип объявления',
+                'announceExpiredTime': 'Время истечения объявления',
 
                 // Profile
                 'editProfile': 'Редактировать профиль',

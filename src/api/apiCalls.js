@@ -33,6 +33,10 @@ export const getUser = (username) => {
     return axios.get(`/api/users/${username}`);
 };
 
+export const getUserRoles = (username) => {
+    return axios.get(`/api/users/${username}/roles`);
+};
+
 export const updateUser = (username, body) => {
     return axios.put(`/api/users/${username}`, body);
 };
@@ -108,4 +112,24 @@ export const getCommentsByPost = (id, page = 0) => {
 
 export const deleteComment = (id) => {
     return axios.delete(`/api/comments/${id}`)
+};
+
+export const sendAnnounce = (body) => {
+    return axios.post(`/api/announce`, body);
+};
+
+export const getAnnounces = (page = 0) => {
+    return axios.get(`/api/announce?page=${page}`);
+};
+
+export const deleteAnnounce = (id) => {
+    return axios.delete(`/api/announce/${id}`)
+};
+
+export const addAdminRole = (username) => {
+    return axios.post(`/api/addAdminRole/${username}`);
+};
+
+export const deleteAdminRole = (username) => {
+    return axios.delete(`/api/deleteAdminRole/${username}`);
 };

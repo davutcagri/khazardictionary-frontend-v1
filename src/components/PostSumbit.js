@@ -161,6 +161,7 @@ const PostSumbit = (props) => {
                                     label={t('postTitle')}
                                     onChange={(event) => setPostTitle(event.target.value)}
                                     value={postTitle}
+                                    error={errors.title}
                                 />
 
                                 {/* CONTENT INPUT */}
