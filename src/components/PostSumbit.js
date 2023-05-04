@@ -69,6 +69,8 @@ const PostSumbit = (props) => {
             try {
                 await sharePost(body);
                 setModalVisible(false);
+                setPostTitle('');
+                setPostContent('');
             } catch (error) {
                 if (error.response.data.validationError) {
                     setErrors(error.response.data.validationError);
@@ -83,6 +85,8 @@ const PostSumbit = (props) => {
     //CANCEL ON CLICK
     const onClickCancel = async () => {
         setModalVisible(false);
+        setPostTitle('');
+        setPostContent('');
     };
 
     //FILE ON CHANGE

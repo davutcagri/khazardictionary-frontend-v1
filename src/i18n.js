@@ -111,7 +111,11 @@ i18next.use(initReactI18next).init({
 
                 // Errors
                 'unkownFileType': 'Unknown file type',
-                'categoryError': 'Category cannot be defined'
+                'categoryError': 'Category cannot be defined',
+
+                // Agreement Box
+                'agreementCheck1': 'I have read and accept the Terms of Use.',
+                'agreementCheck2': '(Terms of Use)'
             }
         },
         tr: {
@@ -214,7 +218,11 @@ i18next.use(initReactI18next).init({
 
                 // Errors
                 'unkownFileType': 'Bilinmeyen dosya türü',
-                'categoryError': 'Kategori tanımlanamıyor'
+                'categoryError': 'Kategori tanımlanamıyor',
+
+                // Agreement Box
+                'agreementCheck1': 'Kullanım koşullarını okudum ve kabul ediyorum.',
+                'agreementCheck2': '(Kullanım Koşulları)'
             }
         },
         az: {
@@ -317,7 +325,11 @@ i18next.use(initReactI18next).init({
 
                 // Errors
                 'unkownFileType': 'Bilinməyən fayl növü',
-                'categoryError': 'Kateqoriya müəyyən edilə bilmir'
+                'categoryError': 'Kateqoriya müəyyən edilə bilmir',
+
+                // Agreement Box
+                'agreementCheck1': 'Mən İstifadə Şərtlərini oxudum və qəbul edirəm.',
+                'agreementCheck2': '(İstifadə Şərtlərini)'
             }
         },
         ru: {
@@ -420,7 +432,11 @@ i18next.use(initReactI18next).init({
 
                 // Errors
                 'unkownFileType': 'Неизвестный тип файла',
-                'categoryError': 'Категория не может быть определена'
+                'categoryError': 'Категория не может быть определена',
+
+                // Agreement Box
+                'agreementCheck1': 'Я прочитал и принимаю Условия использования.',
+                'agreementCheck2': '(Условия эксплуатации)'
             }
         },
     },

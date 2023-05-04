@@ -20,8 +20,9 @@ const UserSignupPage = (props) => {
     const [errors, setErrors] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
     const [modalInputValue, setModalInputValue] = useState();
-    const [customerEmail, setCustomerEmail] = useState();
     const [modalError, setModalError] = useState();
+    const [customerEmail, setCustomerEmail] = useState();
+    const [agreementChecked, seteAgreementChecked] = useState(false);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -37,6 +38,15 @@ const UserSignupPage = (props) => {
 
         setErrors((previousError) => ({ ...previousError, [name]: undefined }));
         setForm((previousForm) => ({ ...previousForm, [name]: value }));
+    };
+
+    const onChangeCheckBox = () => {
+        if (agreementChecked === false) {
+            seteAgreementChecked(true);
+        }
+        else {
+            seteAgreementChecked(false);
+        }
     };
 
     const onClickSignup = async event => {
@@ -125,6 +135,14 @@ const UserSignupPage = (props) => {
                                             <div className='col'><Input name='password' placeholder={t('password')} error={passwordError} onChange={onChange} type={'password'} /></div>
                                             <div className='col'><Input name='passwordRepeat' placeholder={t('passwordRepeat')} error={passwordRepeatError} onChange={onChange} type={'password'} /></div>
                                         </div>
+
+                                        <div className='form-check'>
+                                            <input className='form-check-input' type='checkbox' onChange={onChangeCheckBox} />
+                                            <label className='form-check-label'>
+                                                {t('agreementCheck1')} <Link to={'/termsofuse'}>{t('agreementCheck2')}</Link>
+                                            </label>
+                                        </div>
+
                                         <div className='text-center mt-4'>
                                             {t('haveAnAccount')} <Link className='text-muted' to={'/login'}>{t('login')}</Link>
                                         </div>
@@ -132,7 +150,7 @@ const UserSignupPage = (props) => {
                                             <ButtonWithProgress
                                                 className='btn btn-primary btn-lg mt-3'
                                                 onClick={onClickSignup}
-                                                disabled={pendingApiCall || passwordRepeatError !== undefined}
+                                                disabled={pendingApiCall || passwordRepeatError !== undefined || !agreementChecked}
                                                 pendingApiCall={pendingApiCall}
                                                 text={t('signUp')} />
                                         </div>
