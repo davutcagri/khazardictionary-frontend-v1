@@ -1,72 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import ProfileImageWithDefaults from './ProfileImageWithDefault';
-import { Link, useLocation } from 'react-router-dom';
-import { addAdminRole, deleteAdminRole } from '../api/apiCalls';
+import { Link } from 'react-router-dom';
 
 const UserListItem = (props) => {
     const { user } = props;
-    const { username, displayName, image } = user;
+    const { username, displayName, image, roleName } = user;
 
-    const [canBeAdmin, setCanBeAdmin] = useState(false);
-    const [canBeUserAgain, setCanBeUserAgain] = useState(false);
-    const [noAdminPage, setNoAdminPage] = useState();
+    const [hasAdminRole, setHasAdminRole] = useState();
+    const [verifiedAccount, setVerifiedAccount] = useState();
 
-    const location = useLocation();
-
-    const onClickBeAdmin = async () => {
-        try {
-            await addAdminRole(user.username);
-            setCanBeAdmin(false);
-            setCanBeUserAgain(true);
-        } catch (error) { }
-    };
-
-    const onClickBeUser = async () => {
-        try {
-            await deleteAdminRole(user.username);
-            setCanBeAdmin(true);
-            setCanBeUserAgain(false);
-        } catch (error) { }
-    };
-    
     useEffect(() => {
-        if (location.pathname === '/adminPanel' && !user.roleName.includes('ROLE_ADMIN')) {
-            setNoAdminPage(false);
-            if (username === 'davutcagri') {
-                setCanBeAdmin(false);
-            }
-            else {
-                setCanBeAdmin(true);
-            }
+        if (roleName.includes("ROLE_ADMIN")) {
+            setHasAdminRole(true);
         }
-        else if (location.pathname === '/adminPanel' && user.roleName.includes('ROLE_ADMIN')) {
-            setNoAdminPage(false);
-            if (username === 'davutcagri') {
-                setCanBeUserAgain(false);
-            }
-            else {
-                setCanBeUserAgain(true);
-            }
-        }
-        else if (user.roleName.includes('ROLE_ADMIN')) {
-            setNoAdminPage(true);
+        else {
+            setHasAdminRole(false);
         }
     }, []);
 
-
     return (
         <div>
-            <div className='d-flex'>
-                <Link to={`/user/${username}`} className='list-group-item list-group-item-action'>
-                    <ProfileImageWithDefaults className='rounded-circle' width='32' height='32' alt={`${username} profile image`} image={image} />
-                    <span className='ps-2'>
-                        {displayName}
-                    </span>
-                    {noAdminPage && <span className="mx-2 badge bg-primary">ADMIN</span>}
-                </Link>
-                {canBeAdmin && <button className='btn btn-primary float-end' onClick={onClickBeAdmin}>ADMIN</button>}
-                {canBeUserAgain && <button className='btn btn-primary float-end' onClick={onClickBeUser}>USER</button>}
-            </div>
+            <Link to={`/user/${username}`} className='list-group-item list-group-item-action p-2'>
+                <div className='d-flex'>
+                    <ProfileImageWithDefaults className='rounded-circle ' width='35' height='35' alt={`${username} profile image`} image={image} />
+                <span className='ms-2 mt-1'>{displayName}</span>
+                {verifiedAccount && <i className='material-icons text-primary-emphasis ms-2 mt-1' >verified</i>}
+                {hasAdminRole && <div className='ms-2 mt-1'><span className="badge bg-primary">ADMIN</span></div>}
+                </div>
+            </Link>
         </div>
     );
 }

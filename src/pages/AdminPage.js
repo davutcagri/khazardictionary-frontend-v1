@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import UserList from '../components/UserList';
 import AnnounceSumbit from '../components/AnnounceSumbit';
 import ClockComponent from '../components/ClockComponent';
-import AnnounceView from '../components/AnnounceView';
-import { deleteAnnounce, getAnnounces } from '../api/apiCalls';
 
 const AdminPages = (props) => {
     const { history } = props;

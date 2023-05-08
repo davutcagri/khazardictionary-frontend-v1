@@ -39,6 +39,7 @@ i18next.use(initReactI18next).init({
                 'turkish': 'Turkish',
                 'logout': 'Log Out',
                 'info': 'Info',
+                'adminPanel': 'Admin Panel',
 
                 // Navigation
                 'users_list': 'Users',
@@ -147,6 +148,7 @@ i18next.use(initReactI18next).init({
                 'turkish': 'Türkçe',
                 'logout': 'Çıkış Yap',
                 'info': 'Bilgi',
+                'adminPanel': 'Admin Paneli',
 
                 // Navigation
                 'users_list': 'Kullanıcılar',
@@ -255,6 +257,7 @@ i18next.use(initReactI18next).init({
                 'turkish': 'Türk dili',
                 'logout': 'Çıxış',
                 'info': 'Məlumat',
+                'adminPanel': 'İdarəetmə Paneli',
 
                 // Navigation
                 'users_list': 'İstifadəçilər',
@@ -362,7 +365,8 @@ i18next.use(initReactI18next).init({
                 'russian': 'Русский',
                 'turkish': 'Турецкий',
                 'logout': 'Выйти',
-                'info': 'Информация',  
+                'info': 'Информация', 
+                'adminPanel': 'Панель администратора', 
 
                 // Navigation
                 'users_list': 'Пользователи',

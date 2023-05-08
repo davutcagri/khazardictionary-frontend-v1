@@ -7,9 +7,7 @@ import PostSumbit from '../components/PostSumbit';
 
 const HomePage = (props) => {
     const { isLoggedIn } = useSelector((store) => ({ isLoggedIn: store.isLoggedIn }));
-    const { adminRole } = useSelector((store) => ({ adminRole: store.roleName }));
     const [postCategory, setPostCategory] = useState('allPosts');
-    const [hasAdminRole, setHasAdminRole] = useState(false);
 
     const { history } = props;
     const { push } = history;
@@ -38,21 +36,11 @@ const HomePage = (props) => {
         }
     };
 
-    useEffect(() => {
-        if (adminRole.includes('ROLE_ADMIN')) {
-            setHasAdminRole(true);
-        }
-        
-    }, [adminRole]);
-
     return (
         <div className='container'>
             <div className='row justify-content-end'>
                 <div className='col-3'>
-                    {hasAdminRole && <button className='btn btn-warning mx-2 flex-fill' onClick={() => {push('/adminPanel')}}>ADMIN PANEL</button>}
-                    <PostCategories
-                        onClick={onClick}
-                    />
+                    <PostCategories onClick={onClick} />
                 </div>
                 <div className='col-6'>
                     {isLoggedIn &&

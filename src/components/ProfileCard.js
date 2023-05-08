@@ -20,11 +20,12 @@ const ProfileCard = (props) => {
     const [validationError, setValidationError] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
     const [settingsMode, setSettingsMode] = useState(false);
+    const [accountVerified, setAccountVerified] = useState(false);
 
     const dispatch = useDispatch();
 
     const { username: loggedInUsername } = useSelector((store) => ({ username: store.username }));
-    const { username, displayName, image } = user;
+    const { username, displayName, image, verifiedAccount} = user;
     const { displayName: displayNameError, image: imageError } = validationError;
 
 
@@ -105,6 +106,15 @@ const ProfileCard = (props) => {
         }
     }, [inEditMode, displayName]);
 
+    useEffect(() => {
+        if(verifiedAccount === true) {
+            setAccountVerified(true);
+        }
+        else {
+            setAccountVerified(false);
+        }
+    }, [verifiedAccount]);
+
     return (
         <div className='card text-center shadow'>
             <div className='card-header'>
@@ -120,7 +130,7 @@ const ProfileCard = (props) => {
                 {!inEditMode && !settingsMode && (
                     <>
                         <div className='card mb-3'>
-                            <h3 className='display-6'>{displayName}</h3>
+                            <h3 className='display-6'>{displayName} {accountVerified && <i className='material-icons text-primary-emphasis' >verified</i>}</h3>
                             <h3 className='display-6 fst-italic fs-4'>@{username}</h3>
                         </div>
                         {editable && (

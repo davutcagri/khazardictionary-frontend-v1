@@ -5,7 +5,7 @@ import { useApiProgress } from '../shared/ApiProgress';
 import Spinner from './Spinner';
 import UserListItem from './UserListItem';
 
-const UserList = (props) => {
+const UserList = () => {
     const [page, setPage] = useState({
         content: [],
         size: 5,
@@ -15,9 +15,6 @@ const UserList = (props) => {
     const [loadFailure, setLoadFailure] = useState(false);
 
     const pendingApiCall = useApiProgress('get', '/api/1.0/users?page');
-
-    const { push } = props
-
 
     useEffect(() => {
         loadUsers();

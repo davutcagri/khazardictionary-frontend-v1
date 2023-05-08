@@ -35,7 +35,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        <TopBar />
+        {isLoggedIn && <TopBar />}
         <Switch>
           {!isLoggedIn && <Route path='/login' component={UserLoginPage} />}
           {!isLoggedIn && <Route path='/signup' component={UserSignupPage} />}

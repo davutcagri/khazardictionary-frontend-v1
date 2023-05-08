@@ -23,6 +23,7 @@ const PostView = (props) => {
     const [iLiked, setILiked] = useState('');
     const [userLogged, setUserLogged] = useState('');
     const [errors, setErrors] = useState({});
+    const [accountVerified, setAccountVerified] = useState(false);
 
     const { username, id } = useParams();
 
@@ -106,7 +107,7 @@ const PostView = (props) => {
                 else {
                     setHasComment(false);
                 }
-            } catch (error) { 
+            } catch (error) {
                 setErrors(error);
             }
 
@@ -114,12 +115,21 @@ const PostView = (props) => {
         getPost();
     }, []);
 
+    useEffect(() => {
+        if(user.verifiedAccount === true) {
+            setAccountVerified(true);
+        }
+        else {
+            setAccountVerified(false);
+        }
+    }, [user.verifiedAccount]);
+
     let likeButtonClassName = 'btn btn-like-link btn-sm mt-1';
     if (iLiked === true) {
         likeButtonClassName = 'btn btn-liked-link btn-sm mt-1';
     }
 
-    if(pendingApiCallLoadPost) {
+    if (pendingApiCallLoadPost) {
         return <Spinner />
     }
 
@@ -149,7 +159,9 @@ const PostView = (props) => {
                         <div className='row'>
 
                             {/* USERNAME */}
-                            <Link className='mt-2 mx-2' to={`/user/${username}`} style={{ textDecoration: 'none', color: 'black', fontSize: '25px' }} >{user.displayName}</Link>
+                            <Link className='d-flex mt-2 mx-2' to={`/user/${username}`} style={{ textDecoration: 'none', color: 'black', fontSize: '25px' }} >
+                                {user.displayName} {accountVerified && <i className='material-icons text-primary-emphasis ms-2 mt-2' >verified</i>}
+                            </Link>
 
                             {/* TIMESTAMP */}
                             <a className='mx-2 text-muted'>{formatted}</a>

@@ -12,6 +12,7 @@ const CommentViewItem = (props) => {
 
     const [modalEnabled, setModalEnabled] = useState(false);
     const [hasAdminRole, setHasAdminRole] = useState(false);
+    const [accountVerified, setAccountVerified] = useState(false);
 
     const { comment, getPostCommet } = props;
     const { t, i18n } = useTranslation();
@@ -35,6 +36,15 @@ const CommentViewItem = (props) => {
         }
     }, [hasAdminRole]);
 
+    useEffect(() => {
+        if (comment.user.verifiedAccount === true) {
+            setAccountVerified(true);
+        }
+        else {
+            setAccountVerified(false);
+        }
+    }, [comment.user.verifiedAccount]);
+
     return (
         <div className='container'>
 
@@ -46,26 +56,29 @@ const CommentViewItem = (props) => {
                     <ProfileImageWithDefaults
                         className='rounded-circle shadow mt-1 mx-1'
                         image={comment.user.image}
-                        width='32'
-                        height='32'
+                        width='35'
+                        height='35'
                     />
 
-                    <div>
-
-                        {/* USER DISPLAYNAME */}
-                        <Link className='mt-1 mx-1 text-dark' style={{ textDecoration: 'none' }} to={`/user/${comment.user.username}`}>
+                    {/* USER DISPLAYNAME */}
+                    <Link className='mt-2 text-dark' style={{ textDecoration: 'none' }} to={`/user/${comment.user.username}`}>
+                        <span className='ms-2'>
                             {comment.user.displayName}
-                        </Link>
+                        </span>
+                    </Link>
 
-                        {/* ADMIN TAG */}
+                    {/* VERIFIED LOGO */}
+                    {accountVerified && <i className='material-icons text-primary-emphasis ms-2 mt-2' >verified</i>}
+
+                    {/* ADMIN TAG */}
+                    <div className='mt-2'>
                         {hasAdminRole &&
                             <span className="mx-2 badge bg-primary">ADMIN</span>
                         }
-
-                        {/* TIMESTAMP */}
-                        <a className='text-muted mt-1' style={{ textDecoration: 'none' }}> - {formatted}</a>
-
                     </div>
+
+                    {/* TIMESTAMP */}
+                    <a className='text-muted mt-2' style={{ textDecoration: 'none' }}> - {formatted}</a>
 
                 </div>
 
