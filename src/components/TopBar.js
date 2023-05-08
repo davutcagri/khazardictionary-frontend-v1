@@ -69,6 +69,11 @@ const TopBar = () => {
                                         <i className='material-icons text-danger mr-2'>power_settings_new</i> {t('logout')}
                                     </Link>
                                 </span>
+                                <span>
+                                    <Link className='dropdown-item d-flex p-2' to='/termsofuse' onClick={() => setMenuVisible(false)}>
+                                        <i className='material-icons text-muted mr-2'>info</i> {t('info')}
+                                    </Link>
+                                </span>
                             </div>
                         </li>
                     </ul>

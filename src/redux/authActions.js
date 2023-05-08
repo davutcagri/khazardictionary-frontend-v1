@@ -12,6 +12,12 @@ export const logoutSuccess = () => {
     }
 }
 
+export const deleteProfileSuccess = () => {
+    return {
+        type: ACTIONS.LOGOUT_SUCCESS
+    }
+}
+
 export const loginSuccess = (authState) => {
     return {
         type: ACTIONS.LOGIN_SUCCESS,

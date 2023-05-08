@@ -38,6 +38,7 @@ i18next.use(initReactI18next).init({
                 'russian': 'Russian',
                 'turkish': 'Turkish',
                 'logout': 'Log Out',
+                'info': 'Info',
 
                 // Navigation
                 'users_list': 'Users',
@@ -145,6 +146,7 @@ i18next.use(initReactI18next).init({
                 'russian': 'Rusça',
                 'turkish': 'Türkçe',
                 'logout': 'Çıkış Yap',
+                'info': 'Bilgi',
 
                 // Navigation
                 'users_list': 'Kullanıcılar',
@@ -252,6 +254,7 @@ i18next.use(initReactI18next).init({
                 'russian': 'Rus dili',
                 'turkish': 'Türk dili',
                 'logout': 'Çıxış',
+                'info': 'Məlumat',
 
                 // Navigation
                 'users_list': 'İstifadəçilər',
@@ -359,6 +362,7 @@ i18next.use(initReactI18next).init({
                 'russian': 'Русский',
                 'turkish': 'Турецкий',
                 'logout': 'Выйти',
+                'info': 'Информация',  
 
                 // Navigation
                 'users_list': 'Пользователи',

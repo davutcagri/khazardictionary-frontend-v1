@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { deleteProfile, updateUser } from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
-import { logoutSuccess, updateSuccess } from '../redux/authActions';
+import { deleteProfileSuccess, logoutSuccess, updateSuccess } from '../redux/authActions';
 import LanguageSelector from '../components/LanguageSelector';
 import Modal from './Modal';
 import ButtonWithProgress from './ButtonWithProgress';
@@ -75,8 +75,8 @@ const ProfileCard = (props) => {
 
     const onClickDeleteUser = async () => {
         await deleteProfile(username);
+        await dispatch(deleteProfileSuccess());
         setModalVisible(false);
-        dispatch(logoutSuccess());
         history.push('/');
     };
 
