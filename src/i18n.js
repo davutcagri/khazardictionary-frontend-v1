@@ -129,9 +129,9 @@ i18next.use(initReactI18next).init({
                 'haveAnAccount': 'Zaten bir hesabınız var mı?',
                 'myProfile': 'Profilim',
                 'passwordMismatch': 'Şifreler eşleşmiyor',
-                'authPageTitle1': 'Khazar Sözlük',
-                'authPageTitle2': 'Nedir?',
-                'authParagraph': "Khazar Sözlük, Khazar öğrencilerinin sosyalleşebileceği, etkinlikler düzenleyebileceği ve sorularına cevap bulabileceği bir öğrenci forumudur.",
+                'authPageTitle1': 'Nedir bu',
+                'authPageTitle2': 'Khazar Dictionary?',
+                'authParagraph': "Khazar Dictionary, Khazar öğrencilerinin sosyalleşebileceği, etkinlikler düzenleyebileceği ve sorularına cevap bulabileceği bir öğrenci forumudur.",
 
                 // Authentication Form
                 'username': 'Kullanıcı Adı',
@@ -348,8 +348,8 @@ i18next.use(initReactI18next).init({
                 'myProfile': 'Мой профиль',
                 'passwordMismatch': 'Пароли не совпадают',
                 'authPageTitle1': 'Что такое',
-                'authPageTitle2': 'Khazar Sözlük?',
-                'authParagraph': "Khazar Sözlük - это форум для студентов Хазар, где они могут общаться, организовывать мероприятия и находить ответы на свои вопросы.",
+                'authPageTitle2': 'Khazar Dictionary?',
+                'authParagraph': "Khazar Dictionary - это форум для студентов Хазар, где они могут общаться, организовывать мероприятия и находить ответы на свои вопросы.",
 
                 // Authentication Form
                 'username': 'Имя пользователя',

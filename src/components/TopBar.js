@@ -6,12 +6,10 @@ import { logoutSuccess } from '../redux/authActions';
 import logo from '../images/KhazarDictionary_logo_transparent.png';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
 
-const TopBar = () => {
-
-    const { adminRole } = useSelector((store) => ({ adminRole: store.roleName }));
-
+const TopBar = (props) => {
     const [menuVisible, setMenuVisible] = useState(false);
-    const [hasAdminRole, setHasAdminRole] = useState(false);
+
+    const { hasAdminRole } = props;
 
     const { t } = useTranslation();
     const { isLoggedIn, username, displayName, image } = useSelector((store) => ({
@@ -49,13 +47,6 @@ const TopBar = () => {
         }
     }
 
-    useEffect(() => {
-        if (adminRole.includes('ROLE_ADMIN')) {
-            setHasAdminRole(true);
-        }
-
-    }, [adminRole]);
-
     return (
         <>
             {isLoggedIn && <div className='shadow-lg bg-light mb-3'>
@@ -75,19 +66,19 @@ const TopBar = () => {
                                         <i className='material-icons text-info-emphasis mr-2'>person</i> {t('myProfile')}
                                     </Link>
                                 </span>
-                                
+
                                 <span>
                                     <Link className='dropdown-item d-flex p-2' to='/termsofuse' onClick={() => setMenuVisible(false)}>
                                         <i className='material-icons text-muted mr-2'>info</i> {t('info')}
                                     </Link>
                                 </span>
-                                
+
                                 {hasAdminRole && <span>
                                     <Link className='dropdown-item d-flex p-2' to='/adminpanel' onClick={() => setMenuVisible(false)}>
                                         <i className='material-icons text-warning mr-2'>shield</i> {t('adminPanel')}
                                     </Link>
                                 </span>}
-                                
+
                                 <span>
                                     <Link className='dropdown-item d-flex p-2' to='/login' onClick={onLogoutSuccess}>
                                         <i className='material-icons text-danger mr-2'>power_settings_new</i> {t('logout')}

@@ -8,46 +8,52 @@ import HomePage from '../pages/HomePage';
 import UserPage from '../pages/UserPage';
 import PostPage from '../pages/PostPage';
 import LanguageSelectorNotLogin from '../components/LanguageSelectorNotLogin';
-import TestPage from '../pages/TestPage';
 import AdminPage from '../pages/AdminPage';
 import TermsOfUsePage from '../pages/TermsOfUsePage';
+import { getUser } from '../api/apiCalls';
 
 const App = () => {
   const [hasAdminRole, setHasAdminRole] = useState(false);
 
   const { isLoggedIn } = useSelector((store) => ({ isLoggedIn: store.isLoggedIn }));
-  const adminRole = useSelector(store => {
+  const { username } = useSelector((store) => {
     if (store.isLoggedIn) {
-      return ({ adminRole: store.roleName.includes('ROLE_ADMIN') });
+      return ({ username: store.username });
     }
-    return null;
+    return '';
   });
 
 
   useEffect(() => {
-    if (adminRole !== null) {
-      if (adminRole.adminRole) {
-        setHasAdminRole(true)
+    const getUserRoles = async () => {
+      const user = await getUser(username);
+      if (user.data.roleName.includes('ROLE_ADMIN')) {
+        setHasAdminRole(true);
       }
+      else {
+        setHasAdminRole(false);
+      }
+      console.log(user.data);
     }
-  }, [hasAdminRole]);
+    getUserRoles();
+  }, []);
 
   return (
     <div>
       <Router>
-        {isLoggedIn && <TopBar />}
+        {isLoggedIn && <TopBar hasAdminRole={hasAdminRole} />}
         <Switch>
           {!isLoggedIn && <Route path='/login' component={UserLoginPage} />}
           {!isLoggedIn && <Route path='/signup' component={UserSignupPage} />}
-          
+
           {hasAdminRole && <Route path='/adminPanel' component={AdminPage} />}
 
           {isLoggedIn && <Route exact path='/' component={HomePage} />}
           {isLoggedIn && <Route path='/user/:username' component={UserPage} />}
           {isLoggedIn && <Route path='/posts/:username/:id' component={PostPage} />}
-          
+
           <Route path='/termsofuse' component={TermsOfUsePage} />
-          
+
           {!isLoggedIn && <Redirect to='/login' />}
           {isLoggedIn && <Redirect to='/' />}
         </Switch>
