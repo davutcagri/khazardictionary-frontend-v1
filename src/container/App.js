@@ -33,9 +33,10 @@ const App = () => {
       else {
         setHasAdminRole(false);
       }
-      console.log(user.data);
     }
-    getUserRoles();
+    if(isLoggedIn){
+      getUserRoles();
+    }
   }, []);
 
   return (

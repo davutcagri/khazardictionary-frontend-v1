@@ -19,8 +19,10 @@ const UserListItem = (props) => {
     };
     
     const onClickDeleteAdminRole = async () => {
-        await deleteAdminRole(username);
-        setHasAdminRole(false);
+        if(username !== 'davutcagri') {
+            await deleteAdminRole(username);
+            setHasAdminRole(false);
+        }
     };
 
     useEffect(() => {
