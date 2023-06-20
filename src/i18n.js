@@ -18,38 +18,49 @@ i18next.use(initReactI18next).init({
                 'login': 'Log In',
                 'dontHaveAccount': "Don't have an account?",
                 'haveAnAccount': 'Already have an account?',
-                'myProfile': 'My Profile',
-                'passwordMismatch': 'passwords do not match',
                 'forgotPassword': 'Forgot password?',
-                'unauthorized': 'Please check your informations and try again.',
+                'unauthorized': 'Please check your information and try again.',
+                'authPageTitle1': 'What is',
+                'authPageTitle2': 'Khazar Dictionary?',
+                'authParagraph': 'Khazar Dictionary is a student forum where Khazar students can socialize, organize events, and find answers to their questions.',
+                'username': 'Username',
+                'displayName': 'Display Name',
+                'khazarEmail': 'Email',
+                'faculty': 'Faculty',
+                'password': 'Password',
+                'passwordRepeat': 'Repeat Password',
+                'passwordMismatch': 'Passwords do not match',
 
-                // Language Selection
+                // Navigation
+                'myProfile': 'My Profile',
+                'logout': 'Log Out',
+                'adminPanel': 'Admin Panel',
+
+                // User Actions
+                'users_list': 'Users',
+                'editProfile': 'Edit Profile',
+                'deleteProfile': 'Delete Profile',
+                'save': 'Save',
+                'cancel': 'Cancel',
+                'changeDisplayName': 'Change Display Name',
+                'changeImage': 'Change Profile Image',
+                'deleteAccount': 'Delete Account',
+                'deleteAccountParagraph': 'Are you sure you want to delete your account?',
+
+                // Language
                 'languages': 'Languages',
                 'english': 'English',
                 'azerbaijani': 'Azerbaijani',
                 'russian': 'Russian',
                 'turkish': 'Turkish',
 
-                // Navigation
-                'logout': 'Log Out',
-                'info': 'Info',
-                'adminPanel': 'Admin Panel',
-                'users_list': 'Users',
+                // Pagination
                 'next': 'Next >',
                 'previous': '< Previous',
 
                 // Error Messages
                 'loadFailure': 'Load failure',
                 'userNotFound': 'User not found',
-
-                // Profile
-                'editProfile': 'Edit Profile',
-                'deleteProfile': 'Delete Profile',
-                'save': 'Save',
-                'cancel': 'Cancel',
-                'back': 'Back',
-                'changeDisplayName': 'Change Display Name',
-                'changeImage': 'Change Profile Image',
 
                 // Posts
                 'createPost': 'Create Post',
@@ -61,39 +72,33 @@ i18next.use(initReactI18next).init({
                 'loadNewPosts': 'Load new posts',
                 'deletePost': 'Delete Post',
                 'deletePostParagraph': 'Are you sure you want to delete this post?',
-
-                // Interactions
                 'accept': 'Accept',
-                'like': 'like',
-                'comment': 'comment',
+                'like': 'Like',
+                'comment': 'Comment',
                 'comments': 'Comments',
-                'sumbit': 'Share',
+                'sumbit': 'Submit',
                 'deleteComment': 'Delete Comment',
-                'deleteCommentParaagraph': 'Are you sure you want to delete this comment?',
+                'deleteCommentParagraph': 'Are you sure you want to delete this comment?',
 
                 // Messaging
                 'messages': 'Messages',
 
-                // Account Settings
-                'deleteAccount': 'Delete Account',
-                'deleteAccountParagraph': 'Are you sure you want to delete your account?',
-
-                // General
+                // Settings
                 'settings': 'Settings',
 
-                // Post Categories
-                'categories': 'Kategoriler',
-                'category': 'Kategori',
-                'allPosts': 'Tüm Gönderiler',
-                'questions': 'Sorular',
-                'schoolClubs': 'Okul Kulüpleri',
-                'dormitories': 'Yurtlar',
-                'houseMate': 'Ev Arkadaşı',
-                'lostItems': 'Kayıp Eşyalar',
-                'others': 'Diğer',
-                'studentStore': 'Öğrenci Dükkanı',
+                // Categories
+                'categories': 'Categories',
+                'category': 'Category',
+                'allPosts': 'All Posts',
+                'questions': 'Questions',
+                'schoolClubs': 'School Clubs',
+                'dormitories': 'Dormitories',
+                'houseMate': 'House Mate',
+                'lostItems': 'Lost Items',
+                'others': 'Others',
+                'studentStore': 'Student Store',
 
-                // Verification Code
+                // Verification
                 'code': 'Code',
                 'verificationCodeTitle': 'Verification Code',
                 'verificationCodeLabel': 'Enter your verification code',
