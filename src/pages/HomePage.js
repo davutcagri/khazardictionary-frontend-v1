@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import PostFeed from '../components/PostFeed';
 import UserList from '../components/UserList';
 import PostCategories from '../components/PostCategories';
 import PostSumbit from '../components/PostSumbit';
 
 const HomePage = (props) => {
-    const { isLoggedIn } = useSelector((store) => ({ isLoggedIn: store.isLoggedIn }));
     const [postCategory, setPostCategory] = useState('allPosts');
 
     const { history } = props;
@@ -39,18 +37,27 @@ const HomePage = (props) => {
     return (
         <div className='container'>
             <div className='row justify-content-end'>
+
+                {/* COLUMN 1 */}
                 <div className='col-3'>
                     <PostCategories onClick={onClick} />
                 </div>
+
+                {/* COLUMN 2 */}
                 <div className='col-6'>
-                    {isLoggedIn &&
-                        <div className='mb-2'>
-                            <PostSumbit postCategory={postCategory} />
-                            <PostFeed postCategory={postCategory} push={push} />
-                        </div>
-                    }
+
+                    <div className='mb-2'>
+                        <PostSumbit postCategory={postCategory} />
+                        <PostFeed postCategory={postCategory} push={push} />
+                    </div>
+
                 </div>
-                <div className='col-3'><UserList /></div>
+
+                {/* COLUMN 3 */}
+                <div className='col-3'>
+                    <UserList />
+                </div>
+
             </div>
         </div>
     );

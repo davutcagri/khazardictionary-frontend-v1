@@ -21,12 +21,13 @@ const ProfileCard = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [settingsMode, setSettingsMode] = useState(false);
     const [accountVerified, setAccountVerified] = useState(false);
+    const [imageError, setImageError] = useState(undefined);
 
     const dispatch = useDispatch();
 
     const { username: loggedInUsername } = useSelector((store) => ({ username: store.username }));
-    const { username, displayName, image, verifiedAccount} = user;
-    const { displayName: displayNameError, image: imageError } = validationError;
+    const { username, displayName, image, verifiedAccount } = user;
+    const { displayName: displayNameError } = validationError;
 
 
     const { t } = useTranslation();
@@ -62,12 +63,20 @@ const ProfileCard = (props) => {
         if (event.target.files.length < 1) {
             return;
         }
-        const file = event.target.files[0];
-        const fileReader = new FileReader();
-        fileReader.onloadend = () => {
-            setNewImage(fileReader.result);
+
+        if (event.target.files[0].type === 'image/png' || event.target.files[0].type === 'image/jpeg') {
+            const file = event.target.files[0];
+            const fileReader = new FileReader();
+            fileReader.onloadend = () => {
+                setNewImage(fileReader.result);
+            }
+            fileReader.readAsDataURL(file);
         }
-        fileReader.readAsDataURL(file);
+        else {
+            setImageError(t('invalidImageType'));
+            return;
+        }
+
     };
 
     const onClickCancel = () => {
@@ -86,7 +95,7 @@ const ProfileCard = (props) => {
     }, [updatedDisplayName]);
 
     useEffect(() => {
-        setValidationError(previousValidationError => ({ ...previousValidationError, image: undefined }));
+        setImageError(undefined);
     }, [newImage]);
 
     useEffect(() => {
@@ -107,7 +116,7 @@ const ProfileCard = (props) => {
     }, [inEditMode, displayName]);
 
     useEffect(() => {
-        if(verifiedAccount === true) {
+        if (verifiedAccount === true) {
             setAccountVerified(true);
         }
         else {
@@ -151,10 +160,13 @@ const ProfileCard = (props) => {
                                 </div>
                                 <Modal
                                     visible={modalVisible}
+                                    title={t('deleteAccount')}
+                                    message={t('deleteAccountParagraph')}
+                                    button1={t('accept')}
+                                    button2={t('cancel')}
                                     onClickCancel={onClickCancel}
                                     onClickOk={onClickDeleteUser}
                                     pendingApiCall={pendingApiCallDeleteProfile}
-                                    message={t('modalDeleteAccountParagraph')}
                                 />
                             </>
                         )}
@@ -163,23 +175,33 @@ const ProfileCard = (props) => {
 
                 {inEditMode && (
                     <div>
+
+                        {/* DISPLAY NAME */}
                         <Input
                             label={t('changeDisplayName')}
                             defaultValue={displayName}
                             onChange={(event) => { setUpdatedDisplayName(event.target.value) }}
                             error={displayNameError} />
-                        <Input type='file' onChange={onChangeFile} error={imageError} />
+
+                        {/* PROFILE IMAGE */}
+                        <Input type='file' label={t('changeImage')} onChange={onChangeFile} error={imageError} />
+
                         <div>
+
+                            {/* SAVE BUTTON */}
                             <ButtonWithProgress
                                 className='btn btn-success d-inline-flex mx-1'
                                 onClick={onClickSave}
-                                disabled={pendingApiCall}
+                                disabled={pendingApiCall || imageError || displayNameError}
                                 pendingApiCall={pendingApiCall}
                                 text={<><i className='material-icons' >save</i>{t('save')}</>}
                             />
+
+                            {/* CANCEL BUTTON */}
                             <button className='btn btn-danger d-inline-flex ms-1' onClick={() => setInEditMode(false)} disabled={pendingApiCall}>
                                 <i className='material-icons' >close</i>{t('cancel')}
                             </button>
+
                         </div>
                     </div>
                 )}

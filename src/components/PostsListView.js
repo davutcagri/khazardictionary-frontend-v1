@@ -30,7 +30,6 @@ const PostsListView = (props) => {
     return (
         <div className='list-group m-3'>
             <button className='list-group-item list-group-item-action' onClick={onClickOpen}>
-
                 <div className='d-flex'>
 
                     {/* PROFILE IMAGE */}
@@ -42,18 +41,16 @@ const PostsListView = (props) => {
                     />
 
                     <div className='flex-fill mx-2'>
-
                         <div className='d-inline-flex row'>
-
                             <div>
 
                                 {/* POST TITLE */}
                                 <a style={{ fontSize: '20px' }}>{title}</a>
 
+                                {/* ADMIN TAG */}
                                 {hasAdminRole && <span className="mx-2 badge bg-primary">ADMIN</span>}
 
                             </div>
-
                             <div className='text-muted' style={{ fontSize: '14px' }}>
 
                                 {/* USER'S DISPLAYNAME */}
@@ -69,15 +66,10 @@ const PostsListView = (props) => {
                                 <a>• {commentCount} {t('comment')}</a>
 
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </button>
-
         </div>
     );
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import TopBar from '../components/TopBar';
 import UserSignupPage from '../pages/UserSignupPage';
 import UserLoginPage from '../pages/UserLoginPage';
+import ForgotPassword from '../pages/ForgotPassword';
 import HomePage from '../pages/HomePage';
 import UserPage from '../pages/UserPage';
 import PostPage from '../pages/PostPage';
@@ -37,7 +38,7 @@ const App = () => {
     if(isLoggedIn){
       getUserRoles();
     }
-  }, []);
+  }, [isLoggedIn, username]);
 
   return (
     <div>
@@ -46,6 +47,7 @@ const App = () => {
         <Switch>
           {!isLoggedIn && <Route path='/login' component={UserLoginPage} />}
           {!isLoggedIn && <Route path='/signup' component={UserSignupPage} />}
+          {!isLoggedIn && <Route path='/forgotPassword' component={ForgotPassword} />}
 
           {hasAdminRole && <Route path='/adminPanel' component={AdminPage} />}
 

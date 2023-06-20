@@ -114,18 +114,6 @@ export const deleteComment = (id) => {
     return axios.delete(`/api/comments/${id}`)
 };
 
-export const sendAnnounce = (body) => {
-    return axios.post(`/api/announce`, body);
-};
-
-export const getAnnounces = (page = 0) => {
-    return axios.get(`/api/announce?page=${page}`);
-};
-
-export const deleteAnnounce = (id) => {
-    return axios.delete(`/api/announce/${id}`)
-};
-
 export const addAdminRole = (username) => {
     return axios.post(`/api/addAdminRole/${username}`);
 };

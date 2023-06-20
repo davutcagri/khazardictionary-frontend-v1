@@ -107,16 +107,14 @@ const PostView = (props) => {
                 else {
                     setHasComment(false);
                 }
-            } catch (error) {
-                setErrors(error);
-            }
+            } catch (error) { }
 
         };
         getPost();
-    }, []);
+    }, [username, id]);
 
     useEffect(() => {
-        if(user.verifiedAccount === true) {
+        if (user.verifiedAccount === true) {
             setAccountVerified(true);
         }
         else {
@@ -136,6 +134,7 @@ const PostView = (props) => {
     return (
         <div className='container'>
 
+            {/* NOT FOUND WARNING */}
             {!errors &&
                 <div className='alert alert-primary text-center mb-1'>
                     <i className='material-icons'>warning</i>
@@ -143,9 +142,7 @@ const PostView = (props) => {
             }
 
             <div className='card mx-5'>
-
                 <div className='card-header flex-fill'>
-
                     <div className='d-inline-flex'>
 
                         {/* PROFILE IMAGE */}
@@ -167,7 +164,6 @@ const PostView = (props) => {
                             <a className='mx-2 text-muted'>{formatted}</a>
 
                         </div>
-
                     </div>
 
                     {/* COUNTERS */}
@@ -177,7 +173,6 @@ const PostView = (props) => {
                         <div className='text-muted text-end' style={{ textDecoration: 'none' }}>{post.commentCount} {t('comment')}</div>
 
                     </div>
-
                 </div>
 
                 <div className='card-body'>
@@ -203,7 +198,6 @@ const PostView = (props) => {
                     )}
 
                 </div>
-
                 <div className='card-footer'>
 
                     {/* DELETE POST BUTTON */}
@@ -226,16 +220,14 @@ const PostView = (props) => {
                 </div>
 
                 <Modal
+                    title={t('deletePost')}
+                    button1={t('accept')}
+                    button2={t('cancel')}
                     visible={modalVisible}
                     onClickCancel={onClickCancel}
                     onClickOk={onClickDelete}
                     pendingApiCall={pendingApiCallDelete}
-                    message={
-                        <div>
-                            <div><strong>{t('modalDeletePostParagraph')}</strong></div>
-                            <span>{post.content}</span>
-                        </div>
-                    }
+                    message={t('deletePostParagraph')}
                 />
 
             </div>

@@ -1,11 +1,9 @@
 import React from 'react';
 import ButtonWithProgress from '../components/ButtonWithProgress';
-import { useTranslation } from 'react-i18next';
 
 const Modal = (props) => {
-    const { t } = useTranslation();
 
-    const { visible, onClickCancel, onClickOk, message, pendingApiCall } = props;
+    const { title, button1, button2, message, visible, onClickCancel, onClickOk, pendingApiCall } = props;
 
     let className = "modal fade";
     if (visible) {
@@ -17,19 +15,26 @@ const Modal = (props) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title">{t('modalDeletePostTitle')}</h5>
+                            <h5 className="modal-title">{title}</h5>
                         </div>
                         <div className="modal-body">{message}</div>
                         <div className="modal-footer">
+
+                            {/* ACCEPT BUTTON */}
                             <ButtonWithProgress
-                                type="button"
-                                className="btn btn-primary"
+                                className="mt-3 btn btn-primary float-end d-inline-flex"
                                 onClick={onClickOk}
                                 pendingApiCall={pendingApiCall}
                                 disabled={pendingApiCall}
-                                text={t('modalDeletePostAcceptButton')}
+                                icon={'done'}
+                                text={button1}
                             />
-                            <button type="button" className="btn btn-secondary" onClick={onClickCancel} disabled={pendingApiCall}>{t('cancel')}</button>
+
+                            {/* CANCEL BUTTON */}
+                            <button className="mt-3 btn btn-secondary float-end d-inline-flex ms-1" onClick={onClickCancel} disabled={pendingApiCall}>
+                                <i className='material-icons' >close</i>{button2}
+                            </button>
+                            
                         </div>
                     </div>
                 </div>

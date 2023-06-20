@@ -96,9 +96,11 @@ const CommentViewItem = (props) => {
                     </button> */}
 
                     {/* DELETE BUTTON */}
-                    {ownedbyLoggedInUser && <button className='btn btn-delete-link btn-sm mt-1 float-end' onClick={() => { setModalEnabled(true) }}>
-                        <i className='material-icons'>delete_outline</i>
-                    </button>}
+                    {ownedbyLoggedInUser &&
+                        <button className='btn btn-delete-link btn-sm mt-1 float-end' onClick={() => { setModalEnabled(true) }}>
+                            <i className='material-icons'>delete_outline</i>
+                        </button>
+                    }
 
                 </div>
 
@@ -106,15 +108,13 @@ const CommentViewItem = (props) => {
 
             <Modal
                 visible={modalEnabled}
+                title={t('deleteComment')}
+                button1={t('accept')}
+                button2={t('cancel')}
                 onClickCancel={() => setModalEnabled(false)}
                 onClickOk={onClickDelete}
                 pendingApiCall={pendingApiCall}
-                message={
-                    <div>
-                        <div><strong>{t('modalDeleteCommentParagraph')}</strong></div>
-                        <span>{comment.content}</span>
-                    </div>
-                }
+                message={t('deleteCommentParaagraph')}
             />
 
         </div>

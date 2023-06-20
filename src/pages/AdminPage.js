@@ -1,6 +1,5 @@
 import React from 'react';
 import UserList from '../components/UserList';
-import AnnounceSumbit from '../components/AnnounceSumbit';
 import ClockComponent from '../components/ClockComponent';
 
 const AdminPages = (props) => {
@@ -20,7 +19,7 @@ const AdminPages = (props) => {
 
                 <div className='col-6'>
 
-                    <div className='mb-3'><AnnounceSumbit push={push} /></div>
+                    {/* ANNOUNCE */}
 
                 </div>
 

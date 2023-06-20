@@ -4,14 +4,11 @@ import Spinner from './Spinner';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { getPost, getNewHoaxCount, getNewPosts, getOldPosts, getPostsByCategory, getAnnounces, deleteAnnounce } from '../api/apiCalls';
+import { getPost, getNewHoaxCount, getNewPosts, getOldPosts, getPostsByCategory } from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
-import AnnounceView from './AnnounceView';
 
 const PostFeed = (props) => {
     const [postPage, setPostPage] = useState({ content: [], last: true, number: 0 });
-    const [announcePage, setAnnouncePage] = useState({ content: [], last: true, number: 0 });
-    const [noAnnounce, setNoAnnounce] = useState(false);
     const [newPostCount, setNewPostCount] = useState(0);
     const { username } = useParams();
     const { t } = useTranslation();
@@ -55,27 +52,6 @@ const PostFeed = (props) => {
             ...response.data,
             content: [...previousPostPage.content, ...response.data.content]
         }));
-    };
-
-    const loadAnnounce = async (page) => {
-        try {
-            const response = await getAnnounces(page);
-            let i = response.data.content.length - 1;
-
-            if(i === -1) {
-                setNoAnnounce(true)
-            }
-            else {
-                setAnnouncePage(response.data.content[i]);
-            }            
-        } catch (error) { }
-    };
-
-    const onClickDeleteAnnnounce = async () => {
-        try {
-            await deleteAnnounce(announcePage.id);
-            loadAnnounce();
-        } catch (error) { }
     };
 
     useEffect(() => {
@@ -122,10 +98,6 @@ const PostFeed = (props) => {
         }
     }, [username, postCategory]);
 
-    useEffect(() => {
-        loadAnnounce();
-    }, [username]);
-
     if (content.length === 0) {
         return (
             <div>
@@ -142,7 +114,6 @@ const PostFeed = (props) => {
                 style={{ cursor: loadNewPostProgress ? 'not-allowed' : 'pointer' }}>
                 {loadNewPostProgress ? <Spinner /> : t('loadNewPosts')}
             </div>}
-            {!noAnnounce && <AnnounceView announcePage={announcePage} onClickDeleteAnnnounce={onClickDeleteAnnnounce} />}
             {content.map(post => {
                 return <PostsListView key={post.id} post={post} push={props.push} />
             })}

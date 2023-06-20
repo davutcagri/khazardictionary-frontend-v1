@@ -2,11 +2,8 @@ import React from 'react';
 
 const Input = (props) => {
     const { label, error, name, onChange, type, defaultValue, placeholder, disabled, value } = props;
-    let className = 'form-control';
-    if (type === 'file') {
-        className += '-file form-control';
-    }
 
+    let className = 'form-control';
     if (error !== undefined) {
         className = 'is-invalid form-control';
     }

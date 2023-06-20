@@ -17,10 +17,7 @@ const TermsOfUse = () => {
         setLanguage(localStorageLanguageValue);
     }, [t]);
 
-    if (language === 'en') {
-        return (<TermsContentEN />);
-    }
-    else if (language === 'az') {
+    if (language === 'az') {
         return (<TermsContentAZ />);
     }
     else if (language === 'ru') {
@@ -30,15 +27,7 @@ const TermsOfUse = () => {
         return (<TermsContentTR />);
     }
     else {
-        return (
-            <div className='container'>
-                <div className='text-center'>
-                    <Link to='/'>
-                        <img className='pb-2 mt-5 border-bottom' src={logo} width='25%' alt='Khazar Dictionary Logo' />
-                    </Link>
-                </div>
-            </div>
-        );
+        return (<TermsContentEN />);
     }
 
 
