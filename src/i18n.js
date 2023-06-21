@@ -34,6 +34,7 @@ i18next.use(initReactI18next).init({
                 // Navigation
                 'myProfile': 'My Profile',
                 'logout': 'Log Out',
+                'info': 'Info',
                 'adminPanel': 'Admin Panel',
 
                 // User Actions
