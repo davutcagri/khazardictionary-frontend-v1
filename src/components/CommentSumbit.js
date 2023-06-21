@@ -1,89 +1,91 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { getUser, sendComment } from '../api/apiCalls';
 import ProfileImageWithDefaults from './ProfileImageWithDefault';
-import { sendComment } from '../api/apiCalls';
+import ButtonWithProgress from './ButtonWithProgress';
 import { useTranslation } from 'react-i18next';
+import { useApiProgress } from '../shared/ApiProgress';
 
 const CommentSumbit = (props) => {
 
-    const { userLogged, id, setCommentSumbitEnabled } = props;
-
-    const [comment, setComment] = useState('');
+    const [user, setUser] = useState({});
+    const [comment, setComment] = useState();
     const [errors, setErrors] = useState({});
-
+    const { username: loggedInUsername } = useSelector((store) => ({ username: store.username }));
     const { t } = useTranslation();
 
-    //ON CLICK COMMENT SEND
-    const onClickCommentSend = async () => {
+    const { username, displayName, image, verifiedAccount } = user;
 
+    const pendingApiCall = useApiProgress('post', `/api/posts/${props.postId}/comments`, true);
+
+    useEffect(() => {
+        const loadUser = async () => {
+            const response = await getUser(loggedInUsername);
+            setUser(response.data);
+        };
+        loadUser();
+    }, [loggedInUsername]);
+
+    const onClickCommentSumbit = async () => {
         try {
-
             const body = {
                 content: comment
             }
-
-            await sendComment(body, id);
-            setComment('')
-            setErrors({})
-            setCommentSumbitEnabled(false);
-
+            await sendComment(body, props.postId);
+            window.location.reload(false);
         } catch (error) {
             if (error.response.data.validationError) {
                 setErrors(error.response.data.validationError);
             }
         }
-
     };
 
-    let commentInputError = 'form-control ';
+    let inputClassName = 'form-control';
     if (errors.content) {
-        commentInputError += 'is-invalid';
+        inputClassName += ' is-invalid';
     }
 
+
     return (
-        <div className='card mx-5 mt-3'>
+        <div className='container d-flex'>
 
-            <div className='card-header d-flex'>
+            {/* USER DETAILS CARD */}
+            <div className='col-2 card text-center pt-3'>
 
-                {/* LOGGED IN USER PROFILE IMAGE */}
-                <ProfileImageWithDefaults
-                    className='rounded-circle shadow mt-1 mx-1'
-                    image={userLogged.image}
-                    width='32'
-                    height='32'
-                />
+                <div className='text-center'>
+                    <ProfileImageWithDefaults
+                        className='rounded-circle shadow'
+                        width='100'
+                        height='100'
+                        alt={`${username} profile image`}
+                        image={image} />
+                </div>
 
-                {/* LOGGED IN USER DISPLAYNAME */}
-                <span className='mt-2 mx-1'>{userLogged.displayName}</span>
+                {/* AUTHOR DISPLAY NAME */}
+                <div className='text-center'>
+                    <h3>{displayName}</h3>
+                    {verifiedAccount && <i className='material-icons text-primary-emphasis' >verified</i>}
+                </div>
 
             </div>
 
-            <div className='card-body'>
-
-                {/* COMMENT INPUT */}
+            {/* COMMENT TEXT-PLAIN */}
+            <div className='col-9 ms-3'>
                 <textarea
-                    className={commentInputError}
-                    onChange={(event) => setComment(event.target.value)}
+                    style={{ height: '100px' }}
+                    className={inputClassName}
+                    onChange={(event) => {setComment(event.target.value)}}
                     value={comment}
                 />
-
                 <div className='invalid-feedback'>{errors.content}</div>
 
-                <div className='d-flex'>
-      
-                {/* COMMENT SEND BUTTON */}
-                <button className='btn btn-primary mt-3 mx-1 d-flex' onClick={onClickCommentSend}>
-                    <i className='material-icons mx-1'>send</i>
-                    {t('sumbit')}
-                </button>
-
-                {/* COMMET CANCEL BUTTON */}
-                <button className='btn btn-secondary mt-3 mx-1 d-flex' onClick={() => setCommentSumbitEnabled(false)}>
-                    <i className='material-icons mx-1'>close</i>
-                    {t('cancel')}
-                </button>
-
-</div>
-
+                {/* Send button */}
+                <ButtonWithProgress
+                    className='btn btn-primary float-end d-inline-flex mt-2'
+                    text={t('sumbit')}
+                    icon='done'
+                    onClick={onClickCommentSumbit}
+                    pendingApiCall={pendingApiCall} />
             </div>
 
         </div>

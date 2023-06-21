@@ -61,6 +61,7 @@ i18next.use(initReactI18next).init({
                 // Error Messages
                 'loadFailure': 'Load failure',
                 'userNotFound': 'User not found',
+                'postNotFound': 'Post not found',
 
                 // Posts
                 'createPost': 'Create Post',
@@ -73,8 +74,8 @@ i18next.use(initReactI18next).init({
                 'deletePost': 'Delete Post',
                 'deletePostParagraph': 'Are you sure you want to delete this post?',
                 'accept': 'Accept',
-                'like': 'Like',
-                'comment': 'Comment',
+                'like': 'like',
+                'comment': 'comment',
                 'comments': 'Comments',
                 'sumbit': 'Submit',
                 'deleteComment': 'Delete Comment',

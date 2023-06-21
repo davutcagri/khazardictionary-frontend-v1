@@ -33,3 +33,21 @@ $primary: #970808;
 .btn-comment-link:hover {
     color: $dark;
 }
+
+.btn-unlocked-link {
+    color: $gray-400;
+    padding: 0;
+}
+
+.btn-unlocked-link:hover {
+    color: $green;
+}
+
+.btn-locked-link {
+    color: $gray-400;
+    padding: 0;
+}
+
+.btn-locked-link:hover {
+    color: $red;
+}

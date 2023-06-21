@@ -32,7 +32,7 @@ const Modal = (props) => {
 
                             {/* CANCEL BUTTON */}
                             <button className="mt-3 btn btn-secondary float-end d-inline-flex ms-1" onClick={onClickCancel} disabled={pendingApiCall}>
-                                <i className='material-icons' >close</i>{button2}
+                                <i className='material-icons'>close</i>{button2}
                             </button>
                             
                         </div>

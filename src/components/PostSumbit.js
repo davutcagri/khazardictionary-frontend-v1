@@ -64,6 +64,7 @@ const PostSumbit = (props) => {
             setPostTitle('');
             setPostContent('');
             setSelectedPostCategory(null);
+            window.location.reload(false);
         } catch (error) {
             if (error.response.data.validationError) {
                 setErrors(error.response.data.validationError);

@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import PostFeed from '../components/PostFeed';
 import UserList from '../components/UserList';
 import PostCategories from '../components/PostCategories';
 import PostSumbit from '../components/PostSumbit';
+import PostFeed from '../components/PostFeed';
 
 const HomePage = (props) => {
     const [postCategory, setPostCategory] = useState('allPosts');
-
-    const { history } = props;
-    const { push } = history;
 
     const onClick = async (event) => {
         if (event.target.name === 'allPosts') {
@@ -48,7 +45,7 @@ const HomePage = (props) => {
 
                     <div className='mb-2'>
                         <PostSumbit postCategory={postCategory} />
-                        <PostFeed postCategory={postCategory} push={push} />
+                        <PostFeed push={props.history.push} postCategory={postCategory} />
                     </div>
 
                 </div>

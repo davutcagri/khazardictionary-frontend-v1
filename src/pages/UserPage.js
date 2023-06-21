@@ -3,9 +3,9 @@ import { getUser } from '../api/apiCalls';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApiProgress } from '../shared/ApiProgress';
-import PostFeed from '../components/PostFeed';
 import Spinner from '../components/Spinner';
 import ProfileCard from '../components/ProfileCard';
+import PostFeed from '../components/PostFeed';
 
 const UserPage = (props) => {
     const [user, setUser] = useState({});

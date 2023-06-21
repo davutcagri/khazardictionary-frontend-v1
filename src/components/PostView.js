@@ -1,246 +1,223 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { addLike, deletePost, getPostByUsernameAndId, getUser, sendComment } from '../api/apiCalls';
-import { format } from 'timeago.js';
+import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ipv4 } from '../components/IpForImages';
+import { format } from 'timeago.js';
 import { useSelector } from 'react-redux';
-import { useApiProgress } from '../shared/ApiProgress';
-import Modal from '../components/Modal';
-import ProfileImageWithDefaults from '../components/ProfileImageWithDefault';
+import { addLike, changeCommentsLockStatus, deletePost } from '../api/apiCalls';
+import { ipv4 } from './IpForImages';
+import ProfileImageWithDefaults from './ProfileImageWithDefault';
+import Modal from './Modal';
 import CommentSumbit from './CommentSumbit';
-import CommentView from './CommentView';
-import Spinner from './Spinner';
 
 const PostView = (props) => {
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [commentSumbitEnabled, setCommentSumbitEnabled] = useState(false);
-    const [hasComment, setHasComment] = useState(false);
-    const [post, setPost] = useState('');
-    const [user, setUser] = useState('');
-    const [likes, setLikes] = useState('');
-    const [iLiked, setILiked] = useState('');
-    const [userLogged, setUserLogged] = useState('');
-    const [errors, setErrors] = useState({});
-    const [accountVerified, setAccountVerified] = useState(false);
-
-    const { username, id } = useParams();
+    const [post, setPost] = useState({});
+    const [author, setAuthor] = useState({});
+    const [likeCounter, setLikeCounter] = useState(0);
+    const [commentCounter, setCommentCounter] = useState(0);
+    const [isAuthor, setIsAuthor] = useState(false);
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [commentSumbitVisible, setCommentSumbitVisible] = useState(false);
+    const [commentSumbitButtonVisible, setCommentSumbitButtonVisible] = useState(true);
+    const [isVerifiedAccount, setIsVerifiedAccount] = useState(false);
+    const [iLiked, setILiked] = useState(false);
 
     const { t, i18n } = useTranslation();
+    const { id, title, content, category, timestamp, fileAttachment, commentsLocked } = post;
+    const formatted = format(timestamp, i18n.language);
 
-    const formatted = format(post.timestamp, i18n.language);
-    const loggedInUser = useSelector(store => store.username);
-    const ownedbyLoggedInUser = loggedInUser === username;
-    const pendingApiCallDelete = useApiProgress('delete', `/api/posts/${id}`, true);
-    const pendingApiCallLoadPost = useApiProgress('get', `/api/posts/${username}/${id}`);
+    const { username: loggedInUsername } = useSelector((store) => ({ username: store.username }));
 
+    useEffect(() => {
+        setPost(props.post);
+    }, [props.post]);
 
-    //ON CLICK DELETE
-    const onClickDelete = async () => {
-        const { history } = props;
-        const { push } = history;
-        await deletePost(id);
-        setModalVisible(false);
-        push('/')
-    };
+    useEffect(() => {
+        setAuthor(props.author);
+    }, [props.author]);
 
-    //ON CLICK MODAL CANCEL
-    const onClickCancel = () => {
-        setModalVisible(false);
-    };
+    useEffect(() => {
+        setLikeCounter(props.post.likeCount);
+        setCommentCounter(props.post.commentCount)
+    }, [props.post.likeCounter, props.post.commentCounter]);
 
-    //ON CLICK LIKE
-    const onClickLike = async () => {
-        await addLike(id, username);
-        if (iLiked === false) {
-            if (likes !== post.likeCount) {
-                setLikes(post.likeCount);
-            }
-            else {
-                const newLikeCount = post.likeCount + 1;
-                setLikes(newLikeCount);
-            }
+    useEffect(() => {
+        if (props.author.username === loggedInUsername) {
+            setIsAuthor(true);
+        }
+        else {
+            setIsAuthor(false);
+        }
+    }, [loggedInUsername]);
+
+    useEffect(() => {
+        if (props.post.iliked) {
             setILiked(true);
         }
-        else if (iLiked === true) {
-            if (likes !== post.likeCount) {
-                setLikes(post.likeCount);
-            }
-            else {
-                const newLikeCount = post.likeCount - 1;
-                setLikes(newLikeCount);
-            }
+        else {
+            setILiked(false);
+        }
+    }, [props.post.iliked]);
+
+    useEffect(() => {
+        if (props.author.verifiedAccount) {
+            setIsVerifiedAccount(true);
+        }
+        else {
+            setIsVerifiedAccount(false);
+        }
+    }, [props.author.verifiedAccount]);
+
+    const onClickAcceptDeletePost = async () => {
+        await deletePost(post.id);
+        setDeleteModalVisible(false);
+        props.push('/')
+    };
+
+    const onClickLike = async () => {
+        await addLike(id)
+        window.location.reload(false);
+        if (!iLiked) {
+            setILiked(true);
+        }
+        else {
             setILiked(false);
         }
     };
 
-    //ON CLICK COMMENT
-    const onClickComment = () => {
-
-        if (!commentSumbitEnabled) {
-            setCommentSumbitEnabled(true);
+    const onClickComment = async () => {
+        if (!commentSumbitVisible) {
+            setCommentSumbitVisible(true);
         }
         else {
-            setCommentSumbitEnabled(false);
+            setCommentSumbitVisible(false);
         }
-
     };
 
-    useEffect(() => {
-        const getPost = async () => {
-
-            try {
-                const postResponse = await getPostByUsernameAndId(username, id);
-                const userResponse = await getUser(username);
-                const loggedInUserResponse = await getUser(loggedInUser);
-
-                setUserLogged(loggedInUserResponse.data);
-                setUser(userResponse.data);
-                setPost(postResponse.data.content[0]);
-                setILiked(postResponse.data.content[0].iliked);
-                setLikes(postResponse.data.content[0].likeCount);
-
-                if (post.commentCount !== 0) {
-                    setHasComment(true);
-                }
-                else {
-                    setHasComment(false);
-                }
-            } catch (error) { }
-
-        };
-        getPost();
-    }, [username, id]);
-
-    useEffect(() => {
-        if (user.verifiedAccount === true) {
-            setAccountVerified(true);
-        }
-        else {
-            setAccountVerified(false);
-        }
-    }, [user.verifiedAccount]);
-
-    let likeButtonClassName = 'btn btn-like-link btn-sm mt-1';
-    if (iLiked === true) {
-        likeButtonClassName = 'btn btn-liked-link btn-sm mt-1';
+    const onClickChangeCommentLockStatus = async () => {
+        await changeCommentsLockStatus(id);
+        window.location.reload(false);
     }
 
-    if (pendingApiCallLoadPost) {
-        return <Spinner />
+    let likeButtonClassName = 'btn btn-like-link btn-sm float-end mt-1';
+    if (iLiked) {
+        likeButtonClassName = 'btn btn-liked-link btn-sm float-end mt-1'
     }
 
     return (
-        <div className='container'>
+        <>
+            <div className='container d-flex'>
+                {/* USER DETAILS CARD */}
+                <div className='col-2 card text-center pt-3' onClick={() => { props.push(`/user/${author.username}`) }} style={{ cursor: 'pointer' }}>
 
-            {/* NOT FOUND WARNING */}
-            {!errors &&
-                <div className='alert alert-primary text-center mb-1'>
-                    <i className='material-icons'>warning</i>
-                </div>
-            }
-
-            <div className='card mx-5'>
-                <div className='card-header flex-fill'>
-                    <div className='d-inline-flex'>
-
-                        {/* PROFILE IMAGE */}
+                    {/* AUTHOR PROFILE IMAGE */}
+                    <div className='text-center' >
                         <ProfileImageWithDefaults
-                            className='rounded-circle shadow mt-1 mx-1'
-                            image={user.image}
-                            width='90'
-                            height='90'
-                        />
-
-                        <div className='row'>
-
-                            {/* USERNAME */}
-                            <Link className='d-flex mt-2 mx-2' to={`/user/${username}`} style={{ textDecoration: 'none', color: 'black', fontSize: '25px' }} >
-                                {user.displayName} {accountVerified && <i className='material-icons text-primary-emphasis ms-2 mt-2' >verified</i>}
-                            </Link>
-
-                            {/* TIMESTAMP */}
-                            <a className='mx-2 text-muted'>{formatted}</a>
-
-                        </div>
+                            className='rounded-circle shadow'
+                            width='100'
+                            height='100'
+                            alt={`${author.username} profile image`}
+                            image={author.image} />
                     </div>
 
-                    {/* COUNTERS */}
-                    <div className='float-end mt-3'>
-
-                        <div className='text-muted text-end' style={{ textDecoration: 'none' }}>{likes} {t('like')}</div>
-                        <div className='text-muted text-end' style={{ textDecoration: 'none' }}>{post.commentCount} {t('comment')}</div>
-
+                    {/* AUTHOR DISPLAY NAME */}
+                    <div className='text-center'>
+                        <h3>{author.displayName}</h3>
+                        {isVerifiedAccount && <i className='material-icons text-primary-emphasis' >verified</i>}
                     </div>
+
+                    {/* TIMESTAMP */}
+                    <h6 className='text-muted'>{formatted}</h6>
+
+                    {/* CATEGORY */}
+                    <h6 className='text-muted'>{t(category)}</h6>
+
+                    {/* LIKE COUNTER */}
+                    <h6 className='text-muted'>{likeCounter} {t('like')}</h6>
+
+                    {/* COMMENT COUNTER */}
+                    <h6 className='text-muted'>{commentCounter} {t('comment')}</h6>
+
                 </div>
 
-                <div className='card-body'>
-
+                {/* POST DETAILS CARD */}
+                <div className='col-9 card ms-3'>
                     {/* POST TITLE */}
-                    <h3>{post.title} </h3>
+                    <div className='card-header'>
+                        <h4 style={{ marginBottom: '0' }}>{title}</h4>
+                    </div>
 
                     {/* POST CONTENT */}
-                    <a>{post.content}</a>
+                    <div className='card-body'>
+                        <p>{content}</p>
+                    </div>
 
                     {/* IMAGE */}
-                    {post.fileAttachment && (
-                        <div className='my-3'>
-                            {post.fileAttachment.fileType.startsWith('image') && (
+                    {fileAttachment && (
+                        <div className='my-3 text-center'>
+                            {fileAttachment.fileType.startsWith('image') && (
                                 <img className='rounded-square' style={{ width: '40%', borderRadius: '8px' }}
-                                    src={ipv4 + '/images/attachments/' + post.fileAttachment.name} alt={post.content} />
+                                    src={ipv4 + '/images/attachments/' + fileAttachment.name} alt={content} />
                             )}
 
-                            {!post.fileAttachment.fileType.startsWith('image') && (
+                            {!fileAttachment.fileType.startsWith('image') && (
                                 <strong>{t('unkownFileType')}</strong>
                             )}
                         </div>
                     )}
 
-                </div>
-                <div className='card-footer'>
+                    {/* POST ACTIONS */}
+                    <div className='card-footer'>
 
-                    {/* DELETE POST BUTTON */}
-                    {ownedbyLoggedInUser && (
-                        <button className='btn btn-delete-link btn-sm mt-1 float-end' onClick={() => setModalVisible(true)}>
-                            <i className='material-icons'>delete_outline</i>
+                        {/* DELETE BUTTON */}
+                        {isAuthor &&
+                            <button className='btn btn-delete-link btn-sm float-start mt-1' onClick={() => { setDeleteModalVisible(true) }}>
+                                <i className='material-icons'>delete_outline</i>
+                            </button>
+                        }
+
+                        {/* COMMENTS LOCKED BUTTON */}
+                        {isAuthor && commentsLocked &&
+                            <button className='btn btn-locked-link btn-sm float-start mt-1' onClick={onClickChangeCommentLockStatus}>
+                                <i className='material-icons'>lock</i>
+                            </button>
+                        }
+
+                        {/* COMMENTS UNLOCKED BUTTON */}
+                        {isAuthor && !commentsLocked &&
+                            <button className='btn btn-unlocked-link btn-sm float-start mt-1' onClick={onClickChangeCommentLockStatus}>
+                                <i className='material-icons'>lock_open</i>
+                            </button>
+                        }
+
+                        {/* COMMENT BUTTON */}
+                        {!commentsLocked && <button className='btn btn-comment-link btn-sm float-end mt-1 ms-2' onClick={onClickComment} visible={commentSumbitButtonVisible}>
+                            <i className='material-icons'>comment</i>
+                        </button>}
+
+                        {/* LIKE BUTTON */}
+                        <button className={likeButtonClassName} onClick={onClickLike}>
+                            <i className='material-icons'>favorite</i>
                         </button>
-                    )}
 
-                    {/* LIKE BUTTON */}
-                    <button className={likeButtonClassName} onClick={onClickLike}>
-                        <i className='material-icons'>favorite</i>
-                    </button>
-
-                    {/* COMMENT BUTTON */}
-                    <button className='btn btn-comment-link btn-sm mt-1 mx-1' onClick={onClickComment}>
-                        <i className='material-icons'>message</i>
-                    </button>
-
+                    </div>
                 </div>
-
                 <Modal
+                    visible={deleteModalVisible}
                     title={t('deletePost')}
+                    message={t('deletePostParagraph')}
                     button1={t('accept')}
                     button2={t('cancel')}
-                    visible={modalVisible}
-                    onClickCancel={onClickCancel}
-                    onClickOk={onClickDelete}
-                    pendingApiCall={pendingApiCallDelete}
-                    message={t('deletePostParagraph')}
-                />
-
+                    onClickOk={onClickAcceptDeletePost}
+                    onClickCancel={() => { setDeleteModalVisible(false) }} />
             </div>
-
-            {commentSumbitEnabled && <CommentSumbit userLogged={userLogged} id={id} setCommentSumbitEnabled={setCommentSumbitEnabled} />}
-            {hasComment &&
-                <div>
-                    <h3 className='mx-5 mt-2 mb-2'>{t('comments')}</h3>
-                    <CommentView id={id} />
-                </div>
-            }
-
-        </div>
+            <div className='mt-3'>
+                {commentSumbitVisible && <CommentSumbit postId={id} />}
+                {commentCounter > 0 &&
+                    <h3 className='container mt-2'>{t('comments')}</h3>
+                }
+            </div>
+        </>
     );
 }
 

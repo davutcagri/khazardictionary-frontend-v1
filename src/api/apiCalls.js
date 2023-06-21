@@ -34,7 +34,7 @@ export const getUser = (username) => {
 };
 
 export const getUserRoles = (username) => {
-    return axios.get(`/api/users/${username}/roles`);
+    return axios.get(`/api/users/${username}/roles`); //gereksiz kaldırılacak getuser ile zaten rolleri de alıyoruz
 };
 
 export const updateUser = (username, body) => {
@@ -45,14 +45,13 @@ export const sharePost = (item) => {
     return axios.post('/api/posts', item);
 };
 
-export const getPostByUsernameAndId = (username, id) => {
-    const path = `/api/posts/${username}/${id}`;
+export const getPosts = (username, page = 0, size = 5) => { //getPost değil getPosts olmalı
+    const path = username ? `/api/users/${username}/posts?page=${page}&size=${size}` : `/api/posts?page=${page}&size=${size}`;
     return axios.get(path);
 };
 
-export const getPost = (username, page = 0, size = 5) => {
-    const path = username ? `/api/users/${username}/posts?page=${page}&size=${size}` : `/api/posts?page=${page}&size=${size}`;
-    return axios.get(path);
+export const getPost = (id) => {
+    return axios.get(`/api/posts/view/${id}`);
 };
 
 export const getPostsByCategory = (category) => {
@@ -64,13 +63,13 @@ export const getOldPosts = (id, username) => {
     return axios.get(path);
 };
 
-export const getNewHoaxCount = (id, username) => {
-    const path = username ? `/api/users/${username}/posts/${id}?count=true` : `/api/posts/${id}?count=true`;
+export const getNewPosts = (id, username) => {
+    const path = username ? `/api/users/${username}/posts/${id}?direction=after` : `/api/posts/${id}?direction=after`;
     return axios.get(path);
 };
 
-export const getNewPosts = (id, username) => {
-    const path = username ? `/api/users/${username}/posts/${id}?direction=after` : `/api/posts/${id}?direction=after`;
+export const getNewPostsCount = (id, username) => {
+    const path = username ? `/api/users/${username}/posts/${id}?count=true` : `/api/posts/${id}?count=true`; //getNewPostCount olarak değiştir
     return axios.get(path);
 };
 
@@ -81,6 +80,10 @@ export const sharePostAttachment = (attachment) => {
 export const deletePost = (id) => {
     return axios.delete(`/api/posts/${id}`);
 };
+
+export const changeCommentsLockStatus = (id) => {
+    return axios.put(`/api/posts/${id}/commentsLock`);
+}
 
 export const deleteProfile = (username) => {
     return axios.delete(`/api/users/${username}`);
